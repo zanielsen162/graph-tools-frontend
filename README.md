@@ -43,3 +43,4 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 - Construct specific graph structures (C4, K4, P4, etc) with different values, set number of instances in graph or random amount or set it to be free of these structures
 - save these graphs with notes and modifications
 - branching visualization and automation (add kind of a programmability aspect to what it branches on)
+- structures are parametrized graph families
