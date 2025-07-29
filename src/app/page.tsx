@@ -7,6 +7,7 @@ import Checkbox from "@/components/atoms/Checkbox";
 import NavBar from "@/components/molecules/NavBar";
 import FormRow from "@/components/molecules/FormRow";
 import structures from "@/data/structures.json";
+import Form from "@/components/organisms/Form";
 
 export default function Home() {
   return (
