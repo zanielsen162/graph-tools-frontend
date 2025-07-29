@@ -34,3 +34,12 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+
+### Usability
+- Generate Random Graph
+- Input a graph
+- Visualize the graph, move around nodes/edges interactively
+- Construct specific graph structures (C4, K4, P4, etc) with different values, set number of instances in graph or random amount or set it to be free of these structures
+- save these graphs with notes and modifications
+- branching visualization and automation (add kind of a programmability aspect to what it branches on)
