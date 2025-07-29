@@ -1,0 +1,74 @@
+[
+    {
+        "label": "K (Complete)",
+        "value": "kn"
+    },
+    {
+        "label": "K (Complete Bipartite)",
+        "value": "knm"
+    },
+    {
+        "label": "C (Simple Cycle)",
+        "value": "cn"
+    },
+    {
+        "label": "F (Friendship)",
+        "value": "fn"
+    },
+    {
+        "label": "S (Star)",
+        "value": "sn"
+    },
+    {
+        "label": "W (Wheel)",
+        "value": "wn"
+    },
+    {
+        "label": "P (Path)",
+        "value": "pn"
+    },
+    {
+        "label": "T (Tree)",
+        "value": "tn"
+    },
+    {
+        "label": "B (Book)",
+        "value": "bp"
+    },
+    {
+        "label": "R (Random)",
+        "value": "rn"
+    },
+    {
+        "label": "G (Grid)",
+        "value": "gn"
+    },
+    {
+        "label": "L (Lollipop)",
+        "value": "lmn"
+    },
+    {
+        "label": "And (Andrasfai)",
+        "value": "andn"
+    },
+    {
+        "label": "B (Bouquet)",
+        "value": "bm"
+    },
+    {
+        "label": "T (Turan)",
+        "value": "tnm"
+    },
+    {
+        "label": "S0 (Crown Graph)",
+        "value": "s0n"
+    },
+    {
+        "label": "J (Flower Snarks)",
+        "value": "jn"
+    },
+    {
+        "label": "Q (Hypercube)",
+        "value": "qn"
+    }
+]
