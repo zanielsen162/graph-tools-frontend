@@ -5,13 +5,13 @@ import { IconContext } from "react-icons";
 import { useState } from 'react';
 
 type InputTextboxProps = Omit<React.ComponentProps<"input">, "className"> & {
-    placeholder: string;
+    placeholder?: string;
     type: string;
     randomFunc?: () => void;
     label: string;
 };
 
-const InputTextbox = ({ placeholder, type, randomFunc, label, ...props }: InputTextboxProps) => {
+const InputTextbox = ({ placeholder='', type, randomFunc, label, ...props }: InputTextboxProps) => {
     const [inputValue, setInputValue] = useState(type === 'number' ? 0 : '');
 
     function increment() {
@@ -27,7 +27,7 @@ const InputTextbox = ({ placeholder, type, randomFunc, label, ...props }: InputT
     }
 
     return (
-        <div className="flex flex-col w-full">
+        <div className={`flex flex-col ${type === 'number' ? 'w-full' : 'w-full'}`}>
             <div className='flex flex-row items-center gap-2'>
                 <label className="mb-2 text-sm align-baseline font-medium text-gray-700 dark:text-gray-300">{label}</label>
                 {randomFunc && <button className="align-baseline text-xs text-gray-500 mb-1.5" onClick={randomFunc}>
@@ -41,7 +41,7 @@ const InputTextbox = ({ placeholder, type, randomFunc, label, ...props }: InputT
                     id='input-textbox'
                     type={type}
                     placeholder={placeholder}
-                    className="focus:outline-none flex-1 no-spinner focus:ring-2 focus:ring-blue-500 border border-gray-300 rounded-lg p-2 dark:bg-gray-800 dark:border-gray-600 dark:text-gray-200"
+                    className="focus:outline-none w-full no-spinner focus:ring-2 focus:ring-blue-500 border border-gray-300 rounded-lg p-2 dark:bg-gray-800 dark:border-gray-600 dark:text-gray-200"
                     {...props}
                     value={inputValue}
                     onChange={(e) => setInputValue(e.target.value)}

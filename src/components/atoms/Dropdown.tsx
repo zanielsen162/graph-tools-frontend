@@ -14,14 +14,8 @@ type DropdownProps = Omit<React.ComponentProps<"select">, "className"> & {
 const Dropdown = ({ options, label, randomFunc, ...props }: DropdownProps) => {
     const [selectedValue, setSelectedValue] = useState('');
     const [dropdownOpen, setDropdownOpen] = useState(false);
-    const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-        setSelectedValue(e.target.value);
-        if (props.onChange) {
-            props.onChange(e);
-        }
-    };
-    const selectedOption = options.find(option => option.value === selectedValue);
 
+    const selectedOption = options.find(option => option.value === selectedValue);
 
     return (
         <div className="flex flex-col w-full">
@@ -33,10 +27,12 @@ const Dropdown = ({ options, label, randomFunc, ...props }: DropdownProps) => {
                     </IconContext.Provider>
                 </button>}
             </div>
-            <div className='flex flex-col w-full relative gap-2'>
+            <div className='flex flex-col gap-2'>
                 <button className='flex items-center justify-between w-full p-2 border border-gray-300 rounded-lg dark:bg-gray-800 dark:border-gray-600 dark:text-gray-200'>
-                    <p className={selectedOption ? 'text-black' : 'text-gray-400'}>{selectedOption?.label || 'Select an option here...'}</p>
-                    <button className='arrow-icon' onClick={setDropdownOpen.bind(null, !dropdownOpen)}>
+                    <p className={`truncate ${selectedOption ? 'text-black' : 'text-gray-400'}`}>
+                        {selectedOption?.label || 'Select an option...'}
+                    </p>
+                    <button className='arrow-icon pl-2' onClick={setDropdownOpen.bind(null, !dropdownOpen)}>
                         { dropdownOpen ? <IoIosArrowUp className="text-sm text-gray-500 hover:text-gray-700 focus:outline-none"/> : <IoIosArrowDown className="text-sm text-gray-500 hover:text-gray-700 focus:outline-none"/> }
                     </button>
                 </button>
