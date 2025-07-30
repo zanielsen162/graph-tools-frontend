@@ -22,6 +22,15 @@ pipeline {
             }
         }
 
+        stage('Debug PATH') {
+            steps {
+                sh 'whoami'
+                sh 'echo $PATH'
+                sh 'ls -l /usr/local/bin/kubectl'
+                sh 'which kubectl || echo "kubectl not found in PATH"'
+            }
+        }
+
         stage('Build image') {
             steps {
                 script {
