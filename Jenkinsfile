@@ -17,7 +17,7 @@ pipeline {
         stage('Check kubectl') {
             steps {
                 withCredentials([file(credentialsId: 'kube-config', variable: 'KUBECONFIG')]) {
-                    sh 'kubectl version --client --short || echo "kubectl not found"'
+                    sh 'kubectl version --client || echo "kubectl not found"'
                 }
             }
         }
