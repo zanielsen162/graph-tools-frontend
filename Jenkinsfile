@@ -8,7 +8,7 @@ pipeline {
     }
 
     tools {
-        dockerTool 'latest'
+        dockerTool 'docker-latest'
     }
 
     stages {
