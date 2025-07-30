@@ -6,8 +6,14 @@ pipeline {
         registryCredential = 'docker-personal'
         dockerImageTag = "latest"
     }
-    
+
     stages {
+        stage('Check Docker') {
+            steps {
+                sh 'docker --version'
+            }
+        }
+        
         stage('Build image') {
             steps {
                 script {
