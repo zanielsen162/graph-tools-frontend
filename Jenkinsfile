@@ -6,11 +6,7 @@ pipeline {
         registryCredential = 'docker-personal'
         dockerImageTag = "latest"
     }
-
-    tools {
-        dockerTool 'docker-latest'
-    }
-
+    
     stages {
         stage('Build image') {
             steps {
