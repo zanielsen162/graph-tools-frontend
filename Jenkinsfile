@@ -1,42 +1,44 @@
-
-
 pipeline {
-  environment {
-    IMAGE_NAME = "zanielsen162/graph-tools-frontend"
-    dockerImage = ""
-  }
-  agent any
+    agent any
 
-  stages {
-    stage('Build image') {
-      steps {
-        script {
-          dockerImage = docker.build IMAGE_NAME
-        }
-      }
+    environment {
+        registry = "zanielsen162/graph-tools-frontend"
+        registryCredential = 'docker-personal'
+        dockerImageTag = "latest"
     }
 
-    stage('Pushing Image') {
-        environment {
-            registryCredential = 'docker-personal'
+    tools {
+        docker 'latest'
+    }
+
+    stages {
+        stage('Build image') {
+            steps {
+                script {
+                    dockerImage = docker.build("${registry}:${dockerImageTag}")
+                }
+            }
         }
-        steps {
-            script {
-                docker.withRegistry('https://registry.hub.docker.com', registryCredential ) {
-                    dockerImage.push("latest")
+
+        stage('Push Image') {
+            steps {
+                script {
+                    docker.withRegistry('https://registry.hub.docker.com', registryCredential) {
+                        dockerImage.push()
+                    }
+                }
+            }
+        }
+
+        stage('Deploying Container to Kubernetes') {
+            steps {
+                script {
+                    kubernetesDeploy(
+                        kubeconfigId: 'kube-config',
+                        configs: ['k8s/deployment.yaml', 'k8s/service.yaml']
+                    )
                 }
             }
         }
     }
-
-    stage('Deploying Container to Kubernetes') {
-        steps {
-            script {
-                kubernetesDeploy(configs: "k8s/deployment.yaml", "k8s/service.yaml")
-            }
-        }
-    }
-
-  }
-
 }
