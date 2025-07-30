@@ -13,7 +13,13 @@ pipeline {
                 sh 'docker --version'
             }
         }
-        
+
+        stage('Check kubectl') {
+            steps {
+                sh 'kubectl version --client --short || echo "kubectl not found"'
+            }
+        }
+
         stage('Build image') {
             steps {
                 script {
@@ -34,11 +40,9 @@ pipeline {
 
         stage('Deploying Container to Kubernetes') {
             steps {
-                script {
-                    kubernetesDeploy(
-                        kubeconfigId: 'kube-config',
-                        configs: ['k8s/deployment.yaml', 'k8s/service.yaml']
-                    )
+                withCredentials([file(credentialsId: 'kube-config', variable: 'KUBECONFIG')]) {
+                    sh 'kubectl apply -f k8s/deployment.yaml'
+                    sh 'kubectl apply -f k8s/service.yaml'
                 }
             }
         }
