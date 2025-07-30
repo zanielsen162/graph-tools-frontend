@@ -1,9 +1,11 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: graph-tools-frontend
+  name: graph-tools-frontend #The name of the Kubernetes Deployment to be created in the Kubernetes cluster
+  labels:
+    app: graph-tools-frontend
 spec:
-  replicas: 1
+  replicas: 2 #The number of pods to be created in the Kubernetes cluster for the React.js application container
   selector:
     matchLabels:
       app: graph-tools-frontend
@@ -13,8 +15,7 @@ spec:
         app: graph-tools-frontend
     spec:
       containers:
-      - name: graph-tools-frontend
-        image: graph-tools-frontend
-        imagePullPolicy: Never
+      - name: graph-tools-frontend #The name of the react.js application container
+        image: zanielsen162/graph-tools-frontend:latest #The Docker image for building the React.js application container
         ports:
-        - containerPort: 3000
+        - containerPort: 3000 #The port for the React.js application container
