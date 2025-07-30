@@ -8,12 +8,6 @@ pipeline {
   agent any
 
   stages {
-    stage('Checkout Source') {
-      steps {
-        git 'https://github.com/zanielsen162/graph-tools-frontend.git'
-      }
-    }
-
     stage('Build image') {
       steps {
         script {
