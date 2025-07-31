@@ -2,32 +2,16 @@ pipeline {
     agent any
 
     environment {
-        registry = "zanielsen162/graph-tools-frontend"
+        registry = 'zanielsen162/graph-tools-frontend'
         registryCredential = 'docker-personal'
-        dockerImageTag = "latest"
+        dockerImageTag = 'latest'
     }
 
     stages {
-        stage('Check Docker') {
+        stage('Check Installs') {
             steps {
                 sh 'docker --version'
-            }
-        }
-
-        stage('Check kubectl') {
-            steps {
-                withCredentials([file(credentialsId: 'kube-config', variable: 'KUBECONFIG')]) {
-                    sh 'kubectl version --client || echo "kubectl not found"'
-                }
-            }
-        }
-
-        stage('Debug PATH') {
-            steps {
-                sh 'whoami'
-                sh 'echo $PATH'
-                sh 'ls -l /usr/local/bin/kubectl'
-                sh 'which kubectl || echo "kubectl not found in PATH"'
+                sh 'kubectl version --client'
             }
         }
 
@@ -52,9 +36,15 @@ pipeline {
         stage('Deploying Container to Kubernetes') {
             steps {
                 withCredentials([file(credentialsId: 'kube-config', variable: 'KUBECONFIG')]) {
-                    sh 'kubectl apply -f k8s/deployment.yaml'
-                    sh 'kubectl apply -f k8s/service.yaml'
+                    sh 'kubectl apply -n graph-tools -f k8s/deployment.yaml'
+                    sh 'kubectl apply -n graph-tools -f k8s/service.yaml'
                 }
+            }
+        }
+
+        stage('Testing') {
+            steps {
+                sh 'sleep 10 && curl -v http://192.168.49.2:31000/health 2>&1 | grep -Po "HTTP\\S+ \d{3} .*"'
             }
         }
     }
