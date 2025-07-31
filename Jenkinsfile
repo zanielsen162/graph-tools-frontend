@@ -44,7 +44,7 @@ pipeline {
 
         stage('Testing') {
             steps {
-                sh 'sleep 10 && curl -v http://192.168.49.2:31000/health 2>&1 | grep -Po "HTTP\\S+ \d{3} .*"'
+                sh 'sleep 10 && curl -v http://192.168.49.2:31000/health 2>&1 | grep -Po "HTTP\\S+ [0-9]{3} .*"'
             }
         }
     }
