@@ -27,7 +27,7 @@ const Dropdown = ({ options, label, randomFunc, ...props }: DropdownProps) => {
                     </IconContext.Provider>
                 </button>}
             </div>
-            <div className='flex flex-col gap-2'>
+            <div className='relative flex flex-col gap-2'>
                 <button className='flex items-center justify-between w-full p-2 border border-gray-300 rounded-lg dark:bg-gray-800 dark:border-gray-600 dark:text-gray-200'>
                     <p className={`truncate ${selectedOption ? 'text-black' : 'text-gray-400'}`}>
                         {selectedOption?.label || 'Select an option...'}
@@ -37,7 +37,7 @@ const Dropdown = ({ options, label, randomFunc, ...props }: DropdownProps) => {
                     </button>
                 </button>
                 {dropdownOpen && (
-                    <ul className='p-2 bg-white border border-gray-300 rounded-lg mt-0.5 w-full dark:bg-gray-800 dark:border-gray-600'>
+                    <ul className='p-2 max-h-[40vh] overflow-y-auto absolute top-full z-50 mt-1 bg-white border border-gray-300 rounded-lg dark:bg-gray-800 dark:border-gray-600'>
                         {options.map((option) => (
                             <li key={option.value} value={option.value}>
                                 <button onClick={() => {setSelectedValue(option.value); setDropdownOpen(false);}} className='w-full text-left rounded p-1 hover:bg-gray-100 dark:hover:bg-gray-700' onMouseDown={(e) => e.preventDefault()}>

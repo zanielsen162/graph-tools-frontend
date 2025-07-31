@@ -8,6 +8,7 @@ type FormRowProps = {
     subtitle?: string;
     description?: string;
     entries: React.ReactElement[];
+    repeat?: boolean;
 };
 
 const FormRow = ({ title, subtitle, description, entries }: FormRowProps) => {

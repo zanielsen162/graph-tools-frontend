@@ -54,13 +54,13 @@ const GraphView = ({ title, subtitle, description, nodeEdgeJSON, layoutSpec='ran
     }, [])
 
     return (
-        <div className="p-10">
+        <div className="">
             <Fragment>
-                {title && <h1 className='text-2xl font-bold mb-2'>{title}</h1>}
-                {subtitle && <h2 className='text-xl font-semibold mb-1'>{subtitle}</h2>}
-                {description && <p className='text-gray-600 dark:text-gray-300 mb-4'>{description}</p>}
+                {title && (<h1>{title}</h1>)}
+                {subtitle && (<h2>{subtitle}</h2>)}
+                {description && (<p>{description}</p>)}
 
-                <div ref={graphRef} className='outline outline-3 outline-green-600 dark:outline-green-700 w-full h-[80vh]'>
+                <div ref={graphRef} className='outline outline-3 rounded outline-green-600 dark:outline-green-700 w-full h-[70vh]'>
                 </div>
             </Fragment>
         </div>

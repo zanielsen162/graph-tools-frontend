@@ -19,7 +19,7 @@ const NavBar = ({title, menuItems, logo, titleLink}: NavBarProps) => {
   };
 
   return (
-    <nav className="bg-green-600 m-4 rounded text-white shadow-lg">
+    <nav className="bg-green-600 m-4 mb-0 rounded text-white shadow-lg">
       <div className="px-2 sm:px-6 lg:px-8">
         <div className="flex flex-row h-16 items-center justify-between">
           {/* Mobile menu button */}
