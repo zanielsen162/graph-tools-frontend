@@ -7,13 +7,14 @@ import Checkbox from "@/components/atoms/Checkbox";
 import NavBar from "@/components/molecules/NavBar";
 import FormRow from "@/components/molecules/FormRow";
 import structures from "@/data/structures.json";
+import test_graph_1 from "@/data/test-graph-1.json";
 import Form from "@/components/organisms/Form";
+import GraphView from "@/components/organisms/GraphView";
 
 export default function Home() {
   return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center  min-h-screen pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-      </main>
+    <div className="p-5 sans-serif">
+     
     </div>
   );
 }
