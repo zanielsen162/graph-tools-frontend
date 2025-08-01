@@ -6,7 +6,7 @@ import { BuilderDisplay } from '@/components/templates/templates';
 import { FormRow, RepeatableFormRow } from '@/components/molecules/molecules';
 import { InputTextbox, Dropdown, Checkbox, Button } from '@/components/atoms/atoms';
 import { Form, GraphView } from '@/components/organisms/organisms';
-import { generateRandomNumber, selectRandomItem, generateRandomStructures, generateRandomGraphData } from '@/components/RandomFunctions';
+import { generateRandomNumber, selectRandomItem, generateRandomGraphData } from '@/components/RandomFunctions';
 
 
 const GeneratePage = () => {
@@ -41,36 +41,41 @@ const GeneratePage = () => {
     });
 
     const formRows = [
-        <FormRow 
+        <FormRow key='basic-structure'
             entries={[
-                <InputTextbox type='numeric' label='Vertex Set Size (n)' value={formData.vertexSetSize} randomFunc={() => generateRandomNumber(0,100)} onChange={(val) => setFormData((prev) => ({ ...prev, vertexSetSize: val }))} />,
-                <InputTextbox type='numeric' label='Edge Set Size (m)' value={formData.edgeSetSize} randomFunc={() => generateRandomNumber(0,100)} onChange={(val) => setFormData((prev) => ({ ...prev, edgeSetSize: val }))} />,
+                <InputTextbox key='n' type='numeric' label='Vertex Set Size (n)' value={formData.vertexSetSize} randomFunc={() => setFormData(prev => ({ ...prev, vertexSetSize: String(generateRandomNumber(0, 100)) }))} onChange={(val) => setFormData((prev) => ({ ...prev, vertexSetSize: val }))} />,
+                <InputTextbox key='m' type='numeric' label='Edge Set Size (m)' value={formData.edgeSetSize} randomFunc={() => setFormData(prev => ({ ...prev, edgeSetSize: String(generateRandomNumber(0, 100)) }))} onChange={(val) => setFormData((prev) => ({ ...prev, edgeSetSize: val }))} />,
             ]} 
             title='Basic Structure'
         />,
-        <FormRow 
+        <FormRow key='graph-types'
             entries={[
                 <Checkbox
+                    key='directed'
                     label="Directed"
                     checked={formData.directed}
                     onChange={(val) => setFormData((prev) => ({ ...prev, directed: val }))}
                 />,
                 <Checkbox
+                    key='connected'
                     label="Connected"
                     checked={formData.connected}
                     onChange={(val) => setFormData((prev) => ({ ...prev, connected: val }))}
                 />,
                 <Checkbox
+                    key='complete'
                     label="Complete"
                     checked={formData.complete}
                     onChange={(val) => setFormData((prev) => ({ ...prev, complete: val }))}
                 />,
                 <Checkbox
+                    key='bipartite'
                     label="Bipartite"
                     checked={formData.bipartite}
                     onChange={(val) => setFormData((prev) => ({ ...prev, bipartite: val }))}
                 />,
                 <Checkbox
+                    key='tournament'
                     label="Tournament"
                     checked={formData.tournament}
                     onChange={(val) => setFormData((prev) => ({ ...prev, tournament: val }))}
@@ -82,6 +87,7 @@ const GeneratePage = () => {
                 size: string;
                 amount: string;
             }>
+            key='induced-structures'
             title="Structures"
             data={formData.structures}
             setData={(newData) =>
@@ -131,8 +137,8 @@ const GeneratePage = () => {
     ]
 
     const submissionComponents = [
-        <Button buttonText='Generate Graph' level='primary' onClick={() => console.log(JSON.stringify(formData, null, 2))} />,
-        <Button buttonText='Random' level='secondary' onClick={() => setFormData(generateRandomGraphData(structures.map(item => item.value), generateRandomNumber(0,10)))} />
+        <Button key='generate' buttonText='Generate Graph' level='primary' onClick={() => console.log(JSON.stringify(formData, null, 2))} />,
+        <Button key='random' buttonText='Random' level='secondary' onClick={() => setFormData(generateRandomGraphData(structures.map(item => item.value), generateRandomNumber(0,10)))} />
     ]
 
     const formBuilt = <Form entries={formRows} final={<FormRow entries={submissionComponents} />} />

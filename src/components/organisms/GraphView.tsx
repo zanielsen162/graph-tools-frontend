@@ -1,5 +1,5 @@
 'use client';
-import React, { Fragment, useEffect, useRef } from 'react';
+import React, { Fragment, useEffect, useRef, useMemo } from 'react';
 import cytoscape from 'cytoscape';
 
 const defaultStyle = 
@@ -26,32 +26,30 @@ type GraphViewProps = {
     title?: string;
     subtitle?: string;
     description?: string;
-    nodeEdgeJSON: { nodes: any[], edges: any[] };
+    nodeEdgeJSON: { nodes: { data: {id: string} }[], edges: { data: {id: string, source: string, target: string} }[] };
     layoutSpec?: string;
+    /* eslint-disable  @typescript-eslint/no-explicit-any */
     style?: any[];
 }
 
 const GraphView = ({ title, subtitle, description, nodeEdgeJSON, layoutSpec='random', style=defaultStyle}: GraphViewProps) => {
     
     const graphRef = useRef(null)
+    const layoutOptions = useMemo(() => layoutSpec === 'null' ? { name: layoutSpec, padding: 30 } : {
+        name: layoutSpec,
+        padding: 30,
+        fit: true,
+    }, [layoutSpec]);
 
-    const drawGraph = () => {
-        const cy = cytoscape({
+    useEffect(() => {
+        cytoscape({
             container: graphRef.current,
             elements: nodeEdgeJSON,
             style: style,
-            layout: {
-                name: layoutSpec,
-                fit: true,
-                padding: 30,
-                directed: true,
-            }
-        })
-    }
+            layout: layoutOptions,
+        });
+    }, [nodeEdgeJSON, layoutOptions, style]);
 
-    useEffect(() => {
-        drawGraph()
-    }, [])
 
     return (
         <div className="">

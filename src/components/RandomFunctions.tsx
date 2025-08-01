@@ -2,6 +2,7 @@ function generateRandomNumber(min: number, max: number) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
+/* eslint-disable  @typescript-eslint/no-explicit-any */
 function selectRandomItem(items: any[]) {
     return items[generateRandomNumber(0, items.length - 1)];
 }
@@ -14,6 +15,7 @@ function generateRandomStructures(structures: string[], count: number) {
     }));
 }
 
+/* eslint-disable  @typescript-eslint/no-explicit-any */
 function generateRandomGraphData(structures: any[], count: number) {
     const structuresData = generateRandomStructures(structures, count);
     
@@ -22,8 +24,8 @@ function generateRandomGraphData(structures: any[], count: number) {
     const directed = Math.random() < 0.5;
     const connected = tournament ? true : Math.random() < 0.5;
     const vertexSetSize = generateRandomNumber(1, 50);
-    let min = tournament ? vertexSetSize * (vertexSetSize - 1) / 2 : connected ? vertexSetSize - 1 : 0;
-    let max = tournament ? vertexSetSize * (vertexSetSize - 1) / 2 : directed ? vertexSetSize * (vertexSetSize - 1) : vertexSetSize * (vertexSetSize - 1) / 2;
+    const min = tournament ? vertexSetSize * (vertexSetSize - 1) / 2 : connected ? vertexSetSize - 1 : 0;
+    const max = tournament ? vertexSetSize * (vertexSetSize - 1) / 2 : directed ? vertexSetSize * (vertexSetSize - 1) : vertexSetSize * (vertexSetSize - 1) / 2;
     const edgeSetSize = generateRandomNumber(min, max);
 
     return {

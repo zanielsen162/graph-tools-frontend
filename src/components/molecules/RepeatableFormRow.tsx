@@ -4,6 +4,7 @@ import { FormRow } from '@/components/molecules/molecules';
 import { MdAddCircleOutline, MdAddCircle } from "react-icons/md";
 import { IoMdRemoveCircle, IoMdRemoveCircleOutline } from "react-icons/io";
 
+/* eslint-disable  @typescript-eslint/no-explicit-any */
 type RepeatableFormRowProps<T extends Record<string, any>> = {
     title?: string;
     subtitle?: string;
@@ -15,12 +16,13 @@ type RepeatableFormRowProps<T extends Record<string, any>> = {
         (
             entry: T,
             index: number,
+            /* eslint-disable  @typescript-eslint/no-explicit-any */
             updateEntry: (index: number, key: keyof T, value: any) => void
         ) => React.ReactElement
     >;
 };
 
-
+/* eslint-disable  @typescript-eslint/no-explicit-any */
 const RepeatableFormRow = <T extends Record<string, any>>({
     title,
     subtitle,
