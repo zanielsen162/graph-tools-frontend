@@ -2,7 +2,6 @@ import React from 'react';
 import { FaShuffle } from "react-icons/fa6";
 import { IoIosArrowUp, IoIosArrowDown } from "react-icons/io";
 import { IconContext } from "react-icons";
-import { useState } from 'react';
 
 type InputTextboxProps = Omit<React.ComponentProps<"input">, "className" | "onChange" | "value"> & {
   placeholder?: string;

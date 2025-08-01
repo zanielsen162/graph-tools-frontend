@@ -3,16 +3,6 @@ import React from 'react';
 import { FormRow } from '@/components/molecules/molecules';
 import { MdAddCircleOutline, MdAddCircle } from "react-icons/md";
 import { IoMdRemoveCircle, IoMdRemoveCircleOutline } from "react-icons/io";
-import { Dropdown, InputTextbox } from '@/components/atoms/atoms';
-import { FaBullseye } from 'react-icons/fa6';
-
-function generateRandomNumber(min: number, max: number) {
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-}
-
-function selectRandomItem(items: any[]) {
-    return items[generateRandomNumber(0, items.length - 1)];
-}
 
 type RepeatableFormRowProps<T extends Record<string, any>> = {
     title?: string;

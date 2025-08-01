@@ -6,14 +6,8 @@ import { BuilderDisplay } from '@/components/templates/templates';
 import { FormRow, RepeatableFormRow } from '@/components/molecules/molecules';
 import { InputTextbox, Dropdown, Checkbox, Button } from '@/components/atoms/atoms';
 import { Form, GraphView } from '@/components/organisms/organisms';
+import { generateRandomNumber, selectRandomItem, generateRandomStructures, generateRandomGraphData } from '@/components/RandomFunctions';
 
-function generateRandomNumber(min: number, max: number) {
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-}
-
-function selectRandomItem(items: any[]) {
-    return items[generateRandomNumber(0, items.length - 1)];
-}
 
 const GeneratePage = () => {
     const [formData, setFormData] = useState<{
@@ -109,7 +103,7 @@ const GeneratePage = () => {
                         options={structures}
                         value={entry.structure}
                         onChange={(val) => update(index, 'structure', val)}
-                        randomFunc={() => update(index, 'structure', selectRandomItem(structures))}
+                        randomFunc={() => update(index, 'structure', selectRandomItem(structures).value)}
                     />
                 ),
                 (entry, index, update) => (
@@ -137,8 +131,8 @@ const GeneratePage = () => {
     ]
 
     const submissionComponents = [
-        <Button buttonText='Generate Graph' level='primary' onClick={() => console.log('Graph generated')} />,
-        <Button buttonText='Random' level='secondary' onClick={() => console.log('Form reset')} />
+        <Button buttonText='Generate Graph' level='primary' onClick={() => console.log(JSON.stringify(formData, null, 2))} />,
+        <Button buttonText='Random' level='secondary' onClick={() => setFormData(generateRandomGraphData(structures.map(item => item.value), generateRandomNumber(0,10)))} />
     ]
 
     const formBuilt = <Form entries={formRows} final={<FormRow entries={submissionComponents} />} />
