@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import NavBar from "@/components/molecules/NavBar";
+import menu_items from "@/data/menu-items.json";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -28,7 +29,10 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        {children}
+        <NavBar title='Graph Tools' menuItems={menu_items} />
+        <div className="flex flex-col p-5 pt-0 min-h-screen">
+          {children}
+        </div>
       </body>
     </html>
   );
