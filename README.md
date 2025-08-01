@@ -44,3 +44,43 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 - save these graphs with notes and modifications
 - branching visualization and automation (add kind of a programmability aspect to what it branches on)
 - structures are parametrized graph families
+
+## Graph Requirements
+- Tournament
+    - TRUE: directed, connected, 
+    - FALSE: bipartite, complete
+    - Edges: n(n-1) / 2
+- Bipartite
+    - TRUE:
+    - FALSE: tournament, complete,
+    - Edges: bounded by |A|*|B| if those are the partitions
+- Complete
+    - TRUE: connected
+    - FALSE: acyclic, bipartite, tournament
+    - Edges: n(n-1) / 2 if undirected, else n(n-1)
+- Acyclic
+    - TRUE:
+    - FALSE: complete
+    - Edges: n-1 if undirected, else n(n-1)/2
+- Connected
+    - TRUE: 
+    - FALSE:
+    - Edges minimum is n-1
+
+## Structure Requirements
+- Complete
+    - n * (n-1) / 2 or n * (n-1) if directed
+    - FALSE: tournament, bipartite, acyclic
+- Simple Cycle
+    - n - 1
+    - FALSE: bipartite (if n > 2), acyclic, complete (if n > 3)
+- Star
+    - n
+    - FALSE: complete (if n > 2), tournament
+- Wheel
+    - n \geq 4
+    - 2(n-1)
+    - FALSE: tournament (n > 4), bipartite, complete (n > 4), acyclic 
+- Path
+    - n-1
+    - FALSE: tournament, complete (n > 2) 
