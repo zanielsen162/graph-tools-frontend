@@ -1,17 +1,22 @@
+import { on } from 'events';
 import React from 'react';
 import { useState } from 'react';
 import { RiCheckboxCircleFill, RiCheckboxBlankCircleLine  } from "react-icons/ri";
 
-type CheckboxProps = Omit<React.ComponentProps<"input">, "className"> & {
+type CheckboxProps = Omit<React.ComponentProps<"input">, "className" | "onChange"> & {
     label: string;
     checked?: boolean;
+    onChange: (value: boolean) => void;
 };
 
-const Checkbox = ({ label, checked, ...props }: CheckboxProps) => {
+const Checkbox = ({ label, checked, onChange, ...props }: CheckboxProps) => {
     const [isChecked, setIsChecked] = React.useState(checked || false);
     return (
         <div className="flex items-center">
-            <button>
+            <button
+                onClick={() => onChange(!checked)}
+                className="focus:outline-none"
+            >
                 {isChecked ? (
                     <RiCheckboxCircleFill className="text-green-600 text-lg" onClick={() => setIsChecked(!isChecked)} />
                 ) : (
