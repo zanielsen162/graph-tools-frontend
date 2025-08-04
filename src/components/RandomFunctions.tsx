@@ -10,6 +10,7 @@ function selectRandomItem(items: any[]) {
 function generateRandomStructures(structures: { label: string, value: string }[], count: number, maxSize: number) {
     const amount = generateRandomNumber(1, 5);
     const size = generateRandomNumber(1, Math.floor(maxSize / amount));
+    if (structures.length === 0) return [];
     return Array.from({ length: count }, () => ({
         structure: selectRandomItem(structures),
         size: size,

@@ -11,10 +11,25 @@ import { generateRandomNumber, selectRandomItem, generateRandomGraphData, validS
 
 const GeneratePage = () => {
     const [availableStructures, setAvailableStructures] = useState(structures_supported);
+    const [canCheck, setCanCheck] = useState<{
+        directed: boolean;
+        acyclic: boolean;
+        connected: boolean;
+        complete: boolean;
+        bipartite: boolean;
+        tournament: boolean;
+    }>({
+        directed: true,
+        acyclic: true,
+        connected: true,
+        complete: true,
+        bipartite: true,
+        tournament: true
+    });
 
     const [formData, setFormData] = useState<{
         structures: {
-            structure: string;
+            structure: { value: string; label: string };
             size: number;
             amount: number;
         }[];
@@ -29,7 +44,7 @@ const GeneratePage = () => {
     }>({
         structures: [
             {
-                structure: '',
+                structure: { value: '', label: '' },
                 size: 0,
                 amount: 0
             }
@@ -51,10 +66,16 @@ const GeneratePage = () => {
             validStructures(vertexSetSize, structure, { tournament, bipartite, complete, acyclic, connected, directed })
         );
         setAvailableStructures(validStructuresList);
-        console.log('Available Structures:', validStructuresList);
+        setCanCheck({
+            directed: true,
+            tournament: !bipartite && !complete,
+            bipartite: !tournament && !complete,
+            complete: !tournament && !bipartite && !acyclic,
+            acyclic: !complete,
+            connected: true
+        })
     }, [directed, acyclic, connected, complete, bipartite, tournament, vertexSetSize]);
 
-    
     const min = 
         tournament ? (vertexSetSize - 1) * vertexSetSize / 2 :
         complete && directed ? (vertexSetSize * (vertexSetSize - 1)) :
@@ -86,41 +107,47 @@ const GeneratePage = () => {
                     label="Directed"
                     checked={formData.directed}
                     onChange={(val) => setFormData((prev) => ({ ...prev, directed: val }))}
+                    disabled={!canCheck.directed}
                 />,
                 <Checkbox
                     key='connected'
                     label="Connected"
                     checked={formData.connected}
                     onChange={(val) => setFormData((prev) => ({ ...prev, connected: val }))}
+                    disabled={!canCheck.connected}
                 />,
                 <Checkbox
                     key='complete'
                     label="Complete"
                     checked={formData.complete}
                     onChange={(val) => setFormData((prev) => ({ ...prev, complete: val }))}
+                    disabled={!canCheck.complete}
                 />,
                 <Checkbox
                     key='acyclic'
                     label='Acyclic'
                     checked={formData.acyclic}
                     onChange={(val) => setFormData((prev) => ({ ...prev, acyclic: val }))}
+                    disabled={!canCheck.acyclic}
                 />,
                 <Checkbox
                     key='bipartite'
                     label="Bipartite"
                     checked={formData.bipartite}
                     onChange={(val) => setFormData((prev) => ({ ...prev, bipartite: val }))}
+                    disabled={!canCheck.bipartite}
                 />,
                 <Checkbox
                     key='tournament'
                     label="Tournament"
                     checked={formData.tournament}
                     onChange={(val) => setFormData((prev) => ({ ...prev, tournament: val }))}
+                    disabled={!canCheck.tournament}
                 />
             ]} 
         />,
         <RepeatableFormRow<{
-                structure: string;
+                structure: { value: string; label: string };
                 size: number;
                 amount: number;
             }>
@@ -134,7 +161,7 @@ const GeneratePage = () => {
                 }))
             }
             createEmpty={() => ({
-                structure: '',
+                structure: { value: '', label: '' },
                 size: 0,
                 amount: 0
             })}
@@ -144,9 +171,9 @@ const GeneratePage = () => {
                         key={`structure-${index}`}
                         label="Structure"
                         options={availableStructures}
-                        value={entry.structure}
-                        onChange={(val) => update(index, 'structure', val)}
-                        randomFunc={() => update(index, 'structure', selectRandomItem(availableStructures).value)}
+                        value={entry.structure.value}
+                        onChange={(val) => update(index, 'structure', { value: val, label: availableStructures.find(opt => opt.value === val)?.label || '' } )}
+                        randomFunc={() => { const randStruct = selectRandomItem(availableStructures); update(index, 'structure', { value: randStruct.value, label: randStruct.label })} }
                     />
                 ),
                 (entry, index, update) => (
