@@ -202,7 +202,8 @@ const GeneratePage = () => {
 
     const submissionComponents = [
         <Button key='generate' buttonText='Generate Graph' level='primary' onClick={() => console.log(JSON.stringify(formData, null, 2))} />,
-        <Button key='random' buttonText='Random' level='secondary' onClick={() => setFormData(generateRandomGraphData(structures_supported, generateRandomNumber(0,5)))} />
+        <Button key='random' buttonText='Random' level='secondary' onClick={() => setFormData(generateRandomGraphData(structures_supported, generateRandomNumber(0,5)))} />,
+        <Button key='save' buttonText='Save' level='secondary' onClick={() => console.log(formData)} />
     ]
 
     const formBuilt = <Form entries={formRows} final={<FormRow entries={submissionComponents} />} />
