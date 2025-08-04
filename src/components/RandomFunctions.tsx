@@ -7,11 +7,13 @@ function selectRandomItem(items: any[]) {
     return items[generateRandomNumber(0, items.length - 1)];
 }
 
-function generateRandomStructures(structures: string[], count: number, maxSize: number) {
+function generateRandomStructures(structures: { label: string, value: string }[], count: number, maxSize: number) {
+    const amount = generateRandomNumber(1, 5);
+    const size = generateRandomNumber(1, Math.floor(maxSize / amount));
     return Array.from({ length: count }, () => ({
         structure: selectRandomItem(structures),
-        size: generateRandomNumber(1, maxSize),
-        amount: generateRandomNumber(1, 5)
+        size: size,
+        amount: amount
     }));
 }
 
@@ -43,11 +45,42 @@ function generateRandomValidCombination() {
     }
 }
 
-function generateRandomGraphData(structures: string[], count: number) {
-    const vertexSetSize = generateRandomNumber(1, 20);
+function validStructures(
+    vertexSetSize: number,
+    structure: { label: string, value: string }, 
+    validCombo: { 
+        tournament: boolean, 
+        bipartite: boolean, 
+        complete: boolean, 
+        acyclic: boolean, 
+        connected: boolean, 
+        directed: boolean 
+    }) {
+
+    const { tournament, bipartite, complete, acyclic, connected, directed } = validCombo;
+    if (structure.value === 'kn' && (tournament || bipartite || acyclic)) return false;
+    if (structure.value === 'cn' && ((bipartite && vertexSetSize > 2) || acyclic || (complete && vertexSetSize > 3))) return false;
+    if (structure.value === 'pn' && (complete && vertexSetSize > 2 || tournament)) return false;
+    if (structure.value === 'sn' && (complete && vertexSetSize > 2 || tournament)) return false;
+    if (structure.value === 'wn' && (vertexSetSize < 4 || (tournament && vertexSetSize > 4) || bipartite || (complete && vertexSetSize > 4) || acyclic)) return false;
+    return true;
+};
+
+function generateRandomGraphData(structures: { label: string, value: string }[], count: number) {
+    const vertexSetSize = generateRandomNumber(1, 50);
     const { tournament, bipartite, complete, acyclic, connected, directed } = generateRandomValidCombination();
-    const structuresData = generateRandomStructures(structures, count, vertexSetSize);
-    
+    const validStructuresList = structures.filter(structure => 
+        validStructures(vertexSetSize, structure, { tournament, bipartite, complete, acyclic, connected, directed })
+    );
+
+    const rawStructures = generateRandomStructures(validStructuresList, count, vertexSetSize);
+    const structuresData = validStructures.length === 0 ? []
+        : Array.from(
+            new Map(
+                rawStructures.map(obj => [JSON.stringify(obj), obj])
+            ).values()
+        );
+
     const min = 
         tournament ? (vertexSetSize - 1) * vertexSetSize / 2 :
         complete && directed ? (vertexSetSize * (vertexSetSize - 1)) :
@@ -83,5 +116,6 @@ export {
     generateRandomNumber,
     selectRandomItem,
     generateRandomStructures,
-    generateRandomGraphData
+    generateRandomGraphData,
+    validStructures
 }

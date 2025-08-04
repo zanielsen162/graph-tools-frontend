@@ -1,15 +1,17 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import test_graph_1 from '@/data/test-graph-1.json';
-import structures from '@/data/structures-supported.json';
+import structures_supported from '@/data/structures-supported.json';
 import { BuilderDisplay } from '@/components/templates/templates';
 import { FormRow, RepeatableFormRow } from '@/components/molecules/molecules';
 import { InputTextbox, Dropdown, Checkbox, Button } from '@/components/atoms/atoms';
 import { Form, GraphView } from '@/components/organisms/organisms';
-import { generateRandomNumber, selectRandomItem, generateRandomGraphData } from '@/components/RandomFunctions';
+import { generateRandomNumber, selectRandomItem, generateRandomGraphData, validStructures } from '@/components/RandomFunctions';
 
 
 const GeneratePage = () => {
+    const [availableStructures, setAvailableStructures] = useState(structures_supported);
+
     const [formData, setFormData] = useState<{
         structures: {
             structure: string;
@@ -43,6 +45,15 @@ const GeneratePage = () => {
     });
 
     const { vertexSetSize, edgeSetSize, tournament, bipartite, complete, acyclic, connected, directed } = formData;
+
+    useEffect(() => {
+        const validStructuresList = structures_supported.filter(structure => 
+            validStructures(vertexSetSize, structure, { tournament, bipartite, complete, acyclic, connected, directed })
+        );
+        setAvailableStructures(validStructuresList);
+        console.log('Available Structures:', validStructuresList);
+    }, [directed, acyclic, connected, complete, bipartite, tournament, vertexSetSize]);
+
     
     const min = 
         tournament ? (vertexSetSize - 1) * vertexSetSize / 2 :
@@ -132,10 +143,10 @@ const GeneratePage = () => {
                     <Dropdown
                         key={`structure-${index}`}
                         label="Structure"
-                        options={structures}
+                        options={availableStructures}
                         value={entry.structure}
                         onChange={(val) => update(index, 'structure', val)}
-                        randomFunc={() => update(index, 'structure', selectRandomItem(structures).value)}
+                        randomFunc={() => update(index, 'structure', selectRandomItem(availableStructures).value)}
                     />
                 ),
                 (entry, index, update) => (
@@ -164,7 +175,7 @@ const GeneratePage = () => {
 
     const submissionComponents = [
         <Button key='generate' buttonText='Generate Graph' level='primary' onClick={() => console.log(JSON.stringify(formData, null, 2))} />,
-        <Button key='random' buttonText='Random' level='secondary' onClick={() => setFormData(generateRandomGraphData(structures.map(item => item.value), generateRandomNumber(0,5)))} />
+        <Button key='random' buttonText='Random' level='secondary' onClick={() => setFormData(generateRandomGraphData(structures_supported, generateRandomNumber(0,5)))} />
     ]
 
     const formBuilt = <Form entries={formRows} final={<FormRow entries={submissionComponents} />} />
