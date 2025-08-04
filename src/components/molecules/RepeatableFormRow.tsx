@@ -45,12 +45,12 @@ const RepeatableFormRow = <T extends Record<string, any>>({
         setData(newData);
     };
 
-    const updateEntry = (index: number, key: keyof typeof data[0], value: string) => {
+    // this is NOT properly updating the selected structure when called, it just does a structure, not { value: '', label: '' }
+    const updateEntry = (index: number, key: keyof typeof data[0], value: any) => {
         const newData = [...data];
         newData[index] = { ...newData[index], [key]: value };
         setData(newData);
     };
-
 
     return (
         <div className='space-y-4 flex flex-col items-center'>

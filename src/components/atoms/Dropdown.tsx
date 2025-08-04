@@ -3,10 +3,8 @@ import { FaShuffle } from "react-icons/fa6";
 import { IconContext } from "react-icons";
 import { IoIosArrowUp, IoIosArrowDown } from "react-icons/io";
 
-type Option = { value: string; label: string };
-
 type DropdownProps = {
-  options: Option[];
+  options: { value: string; label: string }[];
   label: string;
   value: string;
   onChange: (value: string) => void;

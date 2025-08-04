@@ -1,0 +1,22 @@
+[
+    {
+        "label": "K (Complete)",
+        "value": "kn"
+    },
+    {
+        "label": "C (Simple Cycle)",
+        "value": "cn"
+    },
+    {
+        "label": "S (Star)",
+        "value": "sn"
+    },
+    {
+        "label": "W (Wheel)",
+        "value": "wn"
+    },
+    {
+        "label": "P (Path)",
+        "value": "pn"
+    }
+]
