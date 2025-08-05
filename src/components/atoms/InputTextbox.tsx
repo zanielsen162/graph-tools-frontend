@@ -8,6 +8,8 @@ type InputTextboxProps = Omit<React.ComponentProps<"input">, "className" | "onCh
   type: string;
   randomFunc?: () => void;
   label: string;
+  secondLabel?: string;
+  secondLabelLink?: string;
   value: string | number;
   onChange: (value: string) => void;
 };
@@ -17,6 +19,8 @@ const InputTextbox = ({
   type,
   randomFunc,
   label,
+  secondLabel,
+  secondLabelLink,
   value,
   onChange,
   ...props
@@ -38,7 +42,7 @@ const InputTextbox = ({
 
   return (
     <div className={`flex flex-col w-full`}>
-      <div className='flex flex-row items-center gap-2'>
+      <div className={ `flex flex-row items-center ${ secondLabel ? 'justify-between' : ''} gap-2`}>
         <label className="mb-2 text-sm align-baseline font-medium text-gray-700 dark:text-gray-300">
           {label}
         </label>
@@ -52,6 +56,11 @@ const InputTextbox = ({
               <FaShuffle />
             </IconContext.Provider>
           </button>
+        )}
+        {secondLabel && (
+          <a href={secondLabelLink || ''} className="mb-2 text-sm align-baseline font-semibold text-green-700 hover:text-green-800">
+            {secondLabel}
+          </a>
         )}
       </div>
 

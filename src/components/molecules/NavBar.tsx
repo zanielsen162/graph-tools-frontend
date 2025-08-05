@@ -1,8 +1,13 @@
 'use client';
 import React  from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { MdMenu, MdMenuOpen } from "react-icons/md";
+import { useUser } from "@/context/UserProvider";
+import axios from "axios";
+import { useRouter } from 'next/navigation';
+import { responseCookiesToRequestCookies } from "next/dist/server/web/spec-extension/adapters/request-cookies";
+import { RiCreativeCommonsZeroLine } from "react-icons/ri";
 
 type NavBarProps = {
     title: string;
@@ -11,12 +16,36 @@ type NavBarProps = {
     titleLink?: string;
 }
 
-const NavBar = ({title, menuItems, logo, titleLink}: NavBarProps) => {
+const NavBar = ({ title, menuItems, logo, titleLink }: NavBarProps) => {
+  const { user, setUser } = useUser();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const router = useRouter();
+
+  useEffect(() => {
+    const checkAuth = async () => {
+      try {
+        const response = await axios.get('http://localhost:5000/verify', { withCredentials: true });
+        setUser(response.data);
+      } catch {
+        setUser(null);
+      }   
+    }
+
+    checkAuth();
+  }, []);
 
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
   };
+
+  const handleLogout = async () => {
+    try {
+      const response = await axios.get('http://localhost:5000/logout', { withCredentials: true });
+      setUser(null); 
+    } catch {
+      console.log('bruh, didnt work')
+    }
+  }
 
   return (
     <nav className="bg-green-600 m-4 mb-0 rounded text-white shadow-lg">
@@ -68,6 +97,24 @@ const NavBar = ({title, menuItems, logo, titleLink}: NavBarProps) => {
                     {item.label}
                   </Link>
                 ))}
+
+                {user && (
+                  <button
+                    onClick={handleLogout}
+                    className="text-green-100 hover:text-white hover:bg-green-700 px-3 py-2 rounded-md text-sm font-medium"
+                  >
+                    Logout
+                  </button>
+                )}
+
+                {!user && (
+                  <Link
+                    href={'/login'}
+                    className="text-green-100 hover:text-white hover:bg-green-700 px-3 py-2 rounded-md text-sm font-medium"
+                  >
+                    Login
+                  </Link>
+                )}
             </div>
           </div>
         </div>
@@ -78,14 +125,33 @@ const NavBar = ({title, menuItems, logo, titleLink}: NavBarProps) => {
         <div className="sm:hidden" id="mobile-menu">
           <div className="flex flex-col items-center space-y-1 px-2 pt-2 pb-3">
             {menuItems.map((item) => (
-                <Link
-                    key={item.label}
-                    href={item.link}
-                    className="text-green-100 w-full hover:text-white hover:bg-green-700 px-3 py-2 rounded-md text-sm font-medium"
-                >
-                    {item.label}
-                </Link>
+              <Link
+                  key={item.label}
+                  href={item.link}
+                  className="text-green-100 w-full hover:text-white hover:bg-green-700 px-3 py-2 rounded-md text-sm font-medium"
+              >
+                  {item.label}
+              </Link>
             ))}
+
+            {user && (
+              <button
+                onClick={handleLogout}
+                className="text-green-100 w-full hover:text-white hover:bg-green-700 px-3 py-2 rounded-md text-sm font-medium"
+              >
+                Logout
+              </button>
+            )}
+
+            {!user && (
+              <Link
+                href={'/login'}
+                className="text-green-100 w-full hover:text-white hover:bg-green-700 px-3 py-2 rounded-md text-sm font-medium"
+              >
+                Login
+              </Link>
+            )}
+            
           </div>
         </div>
       )}
