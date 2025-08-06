@@ -28,7 +28,7 @@ const NavBar = ({ title, menuItems, logo, titleLink }: NavBarProps) => {
         setUser(response.data);
       } catch {
         setUser(null);
-      }   
+      }
     }
 
     checkAuth();
@@ -38,12 +38,23 @@ const NavBar = ({ title, menuItems, logo, titleLink }: NavBarProps) => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
   };
 
-  const handleLogout = async () => {
-    try {
-      const response = await axios.get('http://localhost:5000/logout', { withCredentials: true });
-      setUser(null); 
-    } catch {
-      console.log('bruh, didnt work')
+  const handleLogout = async (event: any) => {
+    event.preventDefault();
+
+    if (user?.auth_source == 'auth0') {
+      window.location.href = 'http://localhost:5000/logout';
+    } else{
+      try {
+        const response = await axios.get('http://localhost:5000/logout', { withCredentials: true });
+        if (response.data.status === 200) {
+          setUser(null); 
+          router.push('/');
+        } else {
+          alert('Logout Failed. Please refresh and try again.')
+        }
+      } catch {
+        alert('Logout Failed. Please refresh and try again.')
+      }
     }
   }
 

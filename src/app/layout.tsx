@@ -5,6 +5,7 @@ import NavBar from "@/components/molecules/NavBar";
 import menu_items from "@/data/menu-items.json";
 import { UserProvider } from "@/context/UserProvider";
 
+
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],

@@ -2,9 +2,10 @@ import React, { useState } from 'react';
 import { FaShuffle } from "react-icons/fa6";
 import { IconContext } from "react-icons";
 import { IoIosArrowUp, IoIosArrowDown } from "react-icons/io";
+import * as types from '@/CustomTypes'
 
 type DropdownProps = {
-  options: { value: string; label: string }[];
+  options: types.StructureType[];
   label: string;
   value: string;
   onChange: (value: string) => void;
