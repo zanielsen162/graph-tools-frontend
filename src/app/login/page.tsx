@@ -5,11 +5,12 @@ import { Button, InputTextbox } from '@/components/atoms/atoms';
 import { useRouter } from 'next/navigation';
 import axios from 'axios';
 import { useUser } from '@/context/UserProvider'
+import * as types from '@/CustomTypes'
 
 export default function LoginPage() {
     const { user, setUser } = useUser();
     const router = useRouter();
-    const [formData, setFormData] = useState({ username: '', password: '' });
+    const [formData, setFormData] = useState<types.UserLogin>(types.createDefaultUserLogin);
     const [loginError, setLoginError] = useState<string | null>(null);
 
     const handleSubmitDirect = async (event: any) => {
@@ -21,7 +22,7 @@ export default function LoginPage() {
                 setUser(verifyResponse.data);  
                 router.push('/');
             } else {
-                setLoginError('Login failed. Please check your credentials and try again.');
+                setLoginError(loginResponse.data.msg || 'Login failed. Please try again.');
             }
         } catch {
             setLoginError('Login failed. Please refresh and check your credentials before trying again.');

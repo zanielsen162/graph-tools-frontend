@@ -6,9 +6,10 @@ import Link from "next/link";
 
 type ProtectedRouteProps = {
   children: React.ReactNode;
+  allowUsers: boolean;
 };
 
-export default function ProtectedRoute({ children }: ProtectedRouteProps) {
+export default function ProtectedRoute({ children, allowUsers }: ProtectedRouteProps) {
   const { user, setUser } = useUser();
 
   useEffect(() => {
@@ -24,7 +25,7 @@ export default function ProtectedRoute({ children }: ProtectedRouteProps) {
     checkAuth();
   }, []);
 
-  if (!user) {
+  if ((allowUsers && !user) || (!allowUsers && user)) {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen">
         <h1 className="text-2xl font-bold">Access Denied</h1>

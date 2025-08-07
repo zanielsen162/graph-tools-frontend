@@ -3,10 +3,17 @@ interface UserLogin  {
     password: string
 }
 
-interface User  {
-    user_id: string,
+interface UserRegister {
     username: string,
-    email: string
+    email: string,
+    password: string
+}
+
+interface User  {
+    id: string,
+    username?: string,
+    email?: string
+    auth_source: string
 }
 
 interface Graph  {
@@ -81,6 +88,21 @@ export function createDefaultGraph(): Graph {
     }
 }
 
+export function createDefaultUserLogin(): UserLogin {
+    return {
+        username: '',
+        password: ''
+    }
+}
+
+export function createDefaultUserRegister(): UserRegister {
+    return {
+        username: '',
+        email: '',
+        password: ''
+    }
+}
+
 export type {
     UserLogin,
     User,
@@ -89,4 +111,5 @@ export type {
     Structure,
     GraphTypes,
     GraphSize,
+    UserRegister
 }
