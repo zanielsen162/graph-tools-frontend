@@ -6,5 +6,9 @@
     {
         "label": "Generate",
         "link": "/generate"
+    },
+    {
+        "label": "Saved",
+        "link": "/saved"
     }
 ]

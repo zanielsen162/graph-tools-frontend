@@ -7,59 +7,15 @@ import { FormRow, RepeatableFormRow } from '@/components/molecules/molecules';
 import { InputTextbox, Dropdown, Checkbox, Button } from '@/components/atoms/atoms';
 import { Form, GraphView } from '@/components/organisms/organisms';
 import { generateRandomNumber, selectRandomItem, generateRandomGraphData, validStructures } from '@/components/RandomFunctions';
-
+import * as types from '@/CustomTypes'
 
 const GeneratePage = () => {
     const [availableStructures, setAvailableStructures] = useState(structures_supported);
-    const [canCheck, setCanCheck] = useState<{
-        directed: boolean;
-        acyclic: boolean;
-        connected: boolean;
-        complete: boolean;
-        bipartite: boolean;
-        tournament: boolean;
-    }>({
-        directed: true,
-        acyclic: true,
-        connected: true,
-        complete: true,
-        bipartite: true,
-        tournament: true
-    });
+    const [canCheck, setCanCheck] = useState<types.GraphTypes>(() => types.createDefaultGraphTypes(true));
+    const [formData, setFormData] = useState<types.Graph>(() => types.createDefaultGraph());
 
-    const [formData, setFormData] = useState<{
-        structures: {
-            structure: { value: string; label: string };
-            size: number;
-            amount: number;
-        }[];
-        vertexSetSize: number;
-        edgeSetSize: number;
-        directed: boolean;
-        acyclic: boolean;
-        connected: boolean;
-        complete: boolean;
-        bipartite: boolean;
-        tournament: boolean;
-    }>({
-        structures: [
-            {
-                structure: { value: '', label: '' },
-                size: 0,
-                amount: 0
-            }
-        ],
-        vertexSetSize: 0,
-        edgeSetSize: 0,
-        directed: false,
-        acyclic: false,
-        connected: false,
-        complete: false,
-        bipartite: false,
-        tournament: false
-    });
-
-    const { vertexSetSize, edgeSetSize, tournament, bipartite, complete, acyclic, connected, directed } = formData;
+    const { vertexSetSize } = formData.size
+    const { tournament, bipartite, complete, acyclic, connected, directed } = formData.types;
 
     useEffect(() => {
         const validStructuresList = structures_supported.filter(structure => 
@@ -95,8 +51,8 @@ const GeneratePage = () => {
     const formRows = [
         <FormRow key='basic-structure'
             entries={[
-                <InputTextbox key='n' type='numeric' label='Vertex Set Size (n)' value={formData.vertexSetSize} randomFunc={() => setFormData(prev => ({ ...prev, vertexSetSize: generateRandomNumber(0, 100) }))} onChange={(val) => setFormData((prev) => ({ ...prev, vertexSetSize: Number(val) }))} />,
-                <InputTextbox key='m' type='numeric' label='Edge Set Size (m)' value={formData.edgeSetSize} randomFunc={() => setFormData(prev => ({ ...prev, edgeSetSize: generateRandomNumber(min, max) }))} onChange={(val) => setFormData((prev) => ({ ...prev, edgeSetSize: Number(val) }))} />,
+                <InputTextbox key='n' type='numeric' label='Vertex Set Size (n)' value={formData.size.vertexSetSize} randomFunc={() => setFormData(prev => ({ ...prev, size: { ...prev.size, vertexSetSize: generateRandomNumber(0, 100) }}))} onChange={(val) => setFormData((prev) => ({ ...prev, size: { ...prev.size, vertexSetSize: Number(val) }}))} />,
+                <InputTextbox key='n' type='numeric' label='Edge Set Size (m)' value={formData.size.edgeSetSize} randomFunc={() => setFormData(prev => ({ ...prev, size: { ...prev.size, edgeSetSize: generateRandomNumber(min, max) }}))} onChange={(val) => setFormData((prev) => ({ ...prev, size: { ...prev.size, edgeSetSize: Number(val) }}))} />,
             ]} 
             title='Basic Structure'
         />,
@@ -105,66 +61,58 @@ const GeneratePage = () => {
                 <Checkbox
                     key='directed'
                     label="Directed"
-                    checked={formData.directed}
-                    onChange={(val) => setFormData((prev) => ({ ...prev, directed: val }))}
+                    checked={formData.types.directed}
+                    onChange={(val) => setFormData((prev) => ({ ...prev, types: { ...prev.types, directed: val, },}))}
                     disabled={!canCheck.directed}
                 />,
                 <Checkbox
                     key='connected'
                     label="Connected"
-                    checked={formData.connected}
-                    onChange={(val) => setFormData((prev) => ({ ...prev, connected: val }))}
+                    checked={formData.types.connected}
+                    onChange={(val) => setFormData((prev) => ({ ...prev, types: { ...prev.types, connected: val, },}))}
                     disabled={!canCheck.connected}
                 />,
                 <Checkbox
                     key='complete'
                     label="Complete"
-                    checked={formData.complete}
-                    onChange={(val) => setFormData((prev) => ({ ...prev, complete: val }))}
+                    checked={formData.types.complete}
+                    onChange={(val) => setFormData((prev) => ({ ...prev, types: { ...prev.types, complete: val, },}))}
                     disabled={!canCheck.complete}
                 />,
                 <Checkbox
                     key='acyclic'
                     label='Acyclic'
-                    checked={formData.acyclic}
-                    onChange={(val) => setFormData((prev) => ({ ...prev, acyclic: val }))}
+                    checked={formData.types.acyclic}
+                    onChange={(val) => setFormData((prev) => ({ ...prev, types: { ...prev.types, acyclic: val, },}))}
                     disabled={!canCheck.acyclic}
                 />,
                 <Checkbox
                     key='bipartite'
                     label="Bipartite"
-                    checked={formData.bipartite}
-                    onChange={(val) => setFormData((prev) => ({ ...prev, bipartite: val }))}
+                    checked={formData.types.bipartite}
+                    onChange={(val) => setFormData((prev) => ({ ...prev, types: { ...prev.types, bipartite: val, },}))}
                     disabled={!canCheck.bipartite}
                 />,
                 <Checkbox
                     key='tournament'
                     label="Tournament"
-                    checked={formData.tournament}
-                    onChange={(val) => setFormData((prev) => ({ ...prev, tournament: val }))}
+                    checked={formData.types.tournament}
+                    onChange={(val) => setFormData((prev) => ({ ...prev, types: { ...prev.types, tournament: val, },}))}
                     disabled={!canCheck.tournament}
                 />
             ]} 
         />,
-        <RepeatableFormRow<{
-                structure: { value: string; label: string };
-                size: number;
-                amount: number;
-            }>
+        <RepeatableFormRow<types.Structure>
             key='induced-structures'
             title="Structures"
-            data={formData.structures}
+            data={formData.inducedStructures}
             setData={(newData) =>
                 setFormData((prev) => ({
                     ...prev,
-                    structures: newData,
+                    inducedStructures: newData,
                 }))
             }
-            createEmpty={() => ({
-                structure: { value: '', label: '' },
-                size: 0,
-                amount: 0
-            })}
+            createEmpty={types.createDefaultStructure}
             fields={[
                 (entry, index, update) => (
                     <Dropdown

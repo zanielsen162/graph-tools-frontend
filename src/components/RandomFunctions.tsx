@@ -1,3 +1,5 @@
+import * as types from '@/CustomTypes'
+
 function generateRandomNumber(min: number, max: number) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
@@ -7,7 +9,7 @@ function selectRandomItem(items: any[]) {
     return items[generateRandomNumber(0, items.length - 1)];
 }
 
-function generateRandomStructures(structures: { label: string, value: string }[], count: number, maxSize: number) {
+function generateRandomStructures(structures: types.StructureType[], count: number, maxSize: number) {
     const amount = generateRandomNumber(1, 5);
     const size = generateRandomNumber(1, Math.floor(maxSize / amount));
     if (structures.length === 0) return [];
@@ -20,7 +22,7 @@ function generateRandomStructures(structures: { label: string, value: string }[]
 
 function generateRandomValidCombination() {
     while (true) {
-        const combo = {
+        const combo: types.GraphTypes  = {
             tournament: Math.random() < 0.5,
             bipartite: Math.random() < 0.5,
             complete: Math.random() < 0.5,
@@ -48,17 +50,10 @@ function generateRandomValidCombination() {
 
 function validStructures(
     vertexSetSize: number,
-    structure: { label: string, value: string }, 
-    validCombo: { 
-        tournament: boolean, 
-        bipartite: boolean, 
-        complete: boolean, 
-        acyclic: boolean, 
-        connected: boolean, 
-        directed: boolean 
-    }) {
-
-    const { tournament, bipartite, complete, acyclic, connected, directed } = validCombo;
+    structure: types.StructureType,
+    validCombo: types.GraphTypes
+) {
+    const { tournament, bipartite, complete, acyclic } = validCombo;
     if (structure.value === 'kn' && (tournament || bipartite || acyclic)) return false;
     if (structure.value === 'cn' && ((bipartite && vertexSetSize > 2) || acyclic || (complete && vertexSetSize > 3))) return false;
     if (structure.value === 'pn' && (complete && vertexSetSize > 2 || tournament)) return false;
@@ -67,7 +62,7 @@ function validStructures(
     return true;
 };
 
-function generateRandomGraphData(structures: { label: string, value: string }[], count: number) {
+function generateRandomGraphData(structures: types.StructureType[], count: number) {
     const vertexSetSize = generateRandomNumber(1, 50);
     const { tournament, bipartite, complete, acyclic, connected, directed } = generateRandomValidCombination();
     const validStructuresList = structures.filter(structure => 
@@ -101,15 +96,19 @@ function generateRandomGraphData(structures: { label: string, value: string }[],
     const edgeSetSize = generateRandomNumber(min, max);
 
     return {
-        structures: structuresData,
-        vertexSetSize: vertexSetSize,
-        edgeSetSize: edgeSetSize,
-        directed: directed,
-        connected: connected,
-        acyclic: acyclic,
-        complete: complete,
-        bipartite: bipartite,
-        tournament: tournament
+        size: {
+            vertexSetSize: vertexSetSize,
+            edgeSetSize: edgeSetSize
+        },
+        types: {
+            directed: directed,
+            connected: connected,
+            acyclic: acyclic,
+            complete: complete,
+            bipartite: bipartite,
+            tournament: tournament
+        },
+        inducedStructures: structuresData,
     };
 }
 
