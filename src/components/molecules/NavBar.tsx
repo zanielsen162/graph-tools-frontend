@@ -6,8 +6,6 @@ import { MdMenu, MdMenuOpen } from "react-icons/md";
 import { useUser } from "@/context/UserProvider";
 import axios from "axios";
 import { useRouter } from 'next/navigation';
-import { responseCookiesToRequestCookies } from "next/dist/server/web/spec-extension/adapters/request-cookies";
-import { RiCreativeCommonsZeroLine } from "react-icons/ri";
 
 type NavBarProps = {
     title: string;
@@ -38,7 +36,7 @@ const NavBar = ({ title, menuItems, logo, titleLink }: NavBarProps) => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
   };
 
-  const handleLogout = async (event: any) => {
+  const handleLogout = async (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
 
     if (user?.auth_source == 'auth0') {

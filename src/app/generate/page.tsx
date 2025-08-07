@@ -14,7 +14,7 @@ const GeneratePage = () => {
     const [canCheck, setCanCheck] = useState<types.GraphTypes>(() => types.createDefaultGraphTypes(true));
     const [formData, setFormData] = useState<types.Graph>(() => types.createDefaultGraph());
 
-    const { vertexSetSize, edgeSetSize } = formData.size
+    const { vertexSetSize } = formData.size
     const { tournament, bipartite, complete, acyclic, connected, directed } = formData.types;
 
     useEffect(() => {

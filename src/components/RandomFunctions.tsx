@@ -53,7 +53,7 @@ function validStructures(
     structure: types.StructureType,
     validCombo: types.GraphTypes
 ) {
-    const { tournament, bipartite, complete, acyclic, connected, directed } = validCombo;
+    const { tournament, bipartite, complete, acyclic } = validCombo;
     if (structure.value === 'kn' && (tournament || bipartite || acyclic)) return false;
     if (structure.value === 'cn' && ((bipartite && vertexSetSize > 2) || acyclic || (complete && vertexSetSize > 3))) return false;
     if (structure.value === 'pn' && (complete && vertexSetSize > 2 || tournament)) return false;

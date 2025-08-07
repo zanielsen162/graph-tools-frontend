@@ -9,12 +9,12 @@ import * as types from '@/CustomTypes'
 import ProtectedRoute from '@/context/ProtectedRoute';
 
 export default function LoginPage() {
-    const { user, setUser } = useUser();
+    const { setUser } = useUser();
     const router = useRouter();
     const [formData, setFormData] = useState<types.UserLogin>(types.createDefaultUserLogin);
     const [loginError, setLoginError] = useState<string | null>(null);
 
-    const handleSubmitDirect = async (event: any) => {
+    const handleSubmitDirect = async (event: React.MouseEvent<HTMLButtonElement>) => {
         event.preventDefault();
         try {
             const loginResponse = await axios.post('http://localhost:5000/login_direct', formData, { withCredentials: true });
@@ -30,7 +30,7 @@ export default function LoginPage() {
         }
     }
 
-    const handleSubmit = async (event: any) => {
+    const handleSubmit = async (event: React.MouseEvent<HTMLButtonElement>) => {
         event.preventDefault();
         window.location.href = 'http://localhost:5000/login';
     }
@@ -82,7 +82,7 @@ export default function LoginPage() {
                     
 
                     <p className="mt-10 text-center text-sm/6 text-gray-500">
-                        Don't have an account?
+                        Don&apos;t have an account?
                     <a href="/signup" className="font-semibold text-green-700 hover:text-green-800"> Sign Up Here</a>
                     </p>
                 </div>
