@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import { useUser } from "@/context/UserProvider";
 import axios from "axios";
 import Link from "next/link";
+import { useRouter } from 'next/navigation';
 
 type ProtectedRouteProps = {
   children: React.ReactNode;
@@ -11,6 +12,7 @@ type ProtectedRouteProps = {
 
 export default function ProtectedRoute({ children, allowUsers }: ProtectedRouteProps) {
   const { user, setUser } = useUser();
+  const router = useRouter();
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -25,7 +27,7 @@ export default function ProtectedRoute({ children, allowUsers }: ProtectedRouteP
     checkAuth();
   }, []);
 
-  if ((allowUsers && !user) || (!allowUsers && user)) {
+  if (allowUsers && !user) {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen">
         <h1 className="text-2xl font-bold">Access Denied</h1>
@@ -35,6 +37,8 @@ export default function ProtectedRoute({ children, allowUsers }: ProtectedRouteP
         </Link>
       </div>
     );
+  } else if (!allowUsers && user) {
+    router.push('/')
   }
 
   return <>{children}</>;

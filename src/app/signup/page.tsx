@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 import axios from 'axios';
 import { useUser } from '@/context/UserProvider'
 import * as types from '@/CustomTypes'
+import ProtectedRoute from '@/context/ProtectedRoute';
 
 export default function LoginPage() {
     const { user, setUser } = useUser();
@@ -65,75 +66,77 @@ export default function LoginPage() {
     }
     
     return (
-        <div className="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
-            <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-                <h2 className="mt-10 text-center text-2xl/9 font-bold tracking-tight text-gray-900">Create an account</h2>
-                <p className='text-gray-600 text-center'>Create an account to save your graph data.</p>
+        <ProtectedRoute allowUsers={false}>
+            <div className="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
+                <div className="sm:mx-auto sm:w-full sm:max-w-sm">
+                    <h2 className="mt-10 text-center text-2xl/9 font-bold tracking-tight text-gray-900">Create an account</h2>
+                    <p className='text-gray-600 text-center'>Create an account to save your graph data.</p>
+                </div>
+
+                <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm space-y-6">
+                    <div>
+                        <InputTextbox
+                            type='email'
+                            label='Email'
+                            value={formData.email}
+                            onChange={(e) => setFormData({ ...formData, email: e })}
+                            required
+                        />
+                    </div>
+
+                    <div>
+                        <InputTextbox
+                            type='text'
+                            label='Username'
+                            value={formData.username}
+                            onChange={(e) => setFormData({ ...formData, username: e })}
+                            required
+                        />
+                    </div>
+
+                    <div>
+                        <InputTextbox
+                            type='password'
+                            label='Password'
+                            value={formData.password}
+                            onChange={(e) => setFormData({ ...formData, password: e })}
+                            required
+                        />
+                    </div>
+
+                    <div>
+                        <InputTextbox
+                            type='password'
+                            label='Confirm Password'
+                            secondLabel={formData.password !== checkPass ? 'Passwords do not match' : ''}
+                            value={checkPass}
+                            onChange={(e) => setCheckPass(e)}
+                            required
+                        />
+                    </div>
+
+                    {regError && <p className="text-red-500 text-sm">{regError}</p>}
+
+                    <div className='flex flex-col gap-2'>
+                        <Button
+                            buttonText='Sign Up'
+                            level='primary'
+                            onClick={handleSubmitDirect}
+                        />
+                        <Button
+                            buttonText='Sign Up with SSO'
+                            level='secondary'
+                            onClick={handleSubmit}
+                        />
+                    </div>
+                    
+
+                    <p className="mt-10 text-center text-sm/6 text-gray-500">
+                        Don't have an account?
+                    <a href="/signup" className="font-semibold text-green-700 hover:text-green-800"> Sign Up Here</a>
+                    </p>
+                </div>
             </div>
-
-            <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm space-y-6">
-                <div>
-                    <InputTextbox
-                        type='email'
-                        label='Email'
-                        value={formData.email}
-                        onChange={(e) => setFormData({ ...formData, email: e })}
-                        required
-                    />
-                </div>
-
-                <div>
-                    <InputTextbox
-                        type='text'
-                        label='Username'
-                        value={formData.username}
-                        onChange={(e) => setFormData({ ...formData, username: e })}
-                        required
-                    />
-                </div>
-
-                <div>
-                    <InputTextbox
-                        type='password'
-                        label='Password'
-                        value={formData.password}
-                        onChange={(e) => setFormData({ ...formData, password: e })}
-                        required
-                    />
-                </div>
-
-                <div>
-                    <InputTextbox
-                        type='password'
-                        label='Confirm Password'
-                        secondLabel={formData.password !== checkPass ? 'Passwords do not match' : ''}
-                        value={checkPass}
-                        onChange={(e) => setCheckPass(e)}
-                        required
-                    />
-                </div>
-
-                {regError && <p className="text-red-500 text-sm">{regError}</p>}
-
-                <div className='flex flex-col gap-2'>
-                    <Button
-                        buttonText='Sign Up'
-                        level='primary'
-                        onClick={handleSubmitDirect}
-                    />
-                    <Button
-                        buttonText='Sign Up with SSO'
-                        level='secondary'
-                        onClick={handleSubmit}
-                    />
-                </div>
-                
-
-                <p className="mt-10 text-center text-sm/6 text-gray-500">
-                    Don't have an account?
-                <a href="/signup" className="font-semibold text-green-700 hover:text-green-800"> Sign Up Here</a>
-                </p>
-            </div>
-        </div>
+        </ProtectedRoute>
     );
 }
