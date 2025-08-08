@@ -26,6 +26,7 @@ const Dropdown = ({ options, label, value, onChange, randomFunc }: DropdownProps
         <label className="mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">{label}</label>
         {randomFunc && (
           <button
+            data-testid='random-btn'
             type="button"
             className="text-xs text-gray-500 mb-1.5"
             onClick={() => {
@@ -43,6 +44,7 @@ const Dropdown = ({ options, label, value, onChange, randomFunc }: DropdownProps
       <div className="relative flex flex-col gap-2">
         <button
           type="button"
+          data-testid='toggle-dropdown'
           className="flex items-center justify-between w-full p-2 border border-gray-300 rounded-lg dark:bg-gray-800 dark:border-gray-600 dark:text-gray-200"
           onClick={toggleDropdown}
         >
@@ -50,7 +52,7 @@ const Dropdown = ({ options, label, value, onChange, randomFunc }: DropdownProps
             {selectedLabel}
           </p>
           <span className="pl-2">
-            {dropdownOpen ? <IoIosArrowUp /> : <IoIosArrowDown />}
+            {dropdownOpen ? <IoIosArrowUp data-testid='up-arrow' /> : <IoIosArrowDown data-testid='down-arrow' />}
           </span>
         </button>
 

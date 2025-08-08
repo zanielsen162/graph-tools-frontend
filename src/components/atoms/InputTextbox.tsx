@@ -67,6 +67,7 @@ const InputTextbox = ({
       <div className='flex flex-row items-center gap-2'>
         <input
           id='input-textbox'
+          data-testid='input-textbox'
           type={type}
           placeholder={placeholder}
           className="focus:outline-none w-full no-spinner focus:ring-2 focus:ring-blue-500 border border-gray-300 rounded-lg p-2 dark:bg-gray-800 dark:border-gray-600 dark:text-gray-200"
@@ -79,6 +80,7 @@ const InputTextbox = ({
             <button
               type="button"
               onClick={increment}
+              data-testid={'up-arrow'}
               className="text-sm text-gray-500 hover:text-gray-700 focus:outline-none"
             >
               <IoIosArrowUp />
@@ -86,6 +88,7 @@ const InputTextbox = ({
             <button
               type="button"
               onClick={decrement}
+              data-testid={'down-arrow'}
               className="text-sm text-gray-500 hover:text-gray-700 focus:outline-none"
             >
               <IoIosArrowDown />

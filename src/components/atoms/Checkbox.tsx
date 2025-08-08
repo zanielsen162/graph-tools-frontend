@@ -17,12 +17,12 @@ const Checkbox = ({ label, checked, onChange, disabled }: CheckboxProps) => {
                 disabled={disabled}
             >
                 {checked ? (
-                    <RiCheckboxCircleFill className="text-green-600 text-lg" onClick={() => (!checked)} />
+                    <RiCheckboxCircleFill data-testid='checked-icon' className="text-green-600 text-lg" onClick={() => (!checked)} />
                 ) : (
-                    <RiCheckboxBlankCircleLine className="text-gray-400 text-lg" onClick={() => (!checked)} />
+                    <RiCheckboxBlankCircleLine data-testid='unchecked-icon' className="text-gray-400 text-lg" onClick={() => (!checked)} />
                 )}
             </button>
-            <label className={`ml-2 text-sm align-baseline font-medium text-gray-700 dark:text-gray-300 ${disabled ? 'line-through' : ''}`}>{label}</label>
+            <p className={`ml-2 text-sm align-baseline font-medium text-gray-700 dark:text-gray-300 ${disabled ? 'line-through' : ''}`}>{label}</p>
         </div>
     );
 };
