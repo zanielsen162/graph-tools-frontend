@@ -1,13 +1,7 @@
 import { screen, fireEvent, render} from '@testing-library/react';
 import RepeatableFormRow from '../../../src/components/molecules/RepeatableFormRow'
-import { Dropdown, InputTextbox } from '../../../src/components/atoms/atoms'
 import '@testing-library/jest-dom';
 import { useState } from 'react'
-
-const options = [
-  { value: 'one', label: 'Option One' },
-  { value: 'two', label: 'Option Two' },
-];
 
 type TestData =  {
     label: string,

@@ -16,7 +16,7 @@ const FormRow = ({ title, subtitle, description, entries }: FormRowProps) => {
             { description && <p className='text-sm text-gray-600 mb-4'>{description}</p> }
             <div className='flex sm:flex-row flex-col gap-4'>
                 {entries.map((EntryComponent, index) => (
-                    <div key={index} className='flex-1'>
+                    <div key={index} data-testid='row-comp' className='flex-1'>
                         {EntryComponent}
                     </div>
                 ))}
