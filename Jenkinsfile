@@ -15,17 +15,20 @@ pipeline {
             }
         }
 
-        stage('Run Jest Tests') {
-            steps {
-                sh 'npm ci'
-                sh 'npm test'
-            }
-        }
-
         stage('Build image') {
             steps {
                 script {
                     dockerImage = docker.build("${registry}:${dockerImageTag}")
+                }
+            }
+        }
+
+        stage('Run Jest Tests') {
+            steps {
+                script {
+                    dockerImage.inside {
+                        sh 'npm test'
+                    }
                 }
             }
         }
