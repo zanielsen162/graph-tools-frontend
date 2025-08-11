@@ -1,4 +1,4 @@
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import Form from '../../../src/components/organisms/Form'
 
@@ -25,4 +25,19 @@ describe('Form component', () => {
             expect(screen.getByText(item)).toBeInTheDocument();
         })
     })
+
+    it('displays final component if given', () => {
+        render(
+            <Form
+                entries={testingText.map((i, _) => (
+                    <TestingComponent text={i} />
+                ))}
+
+                final={<TestingComponent text='final'/>}
+            />
+        )
+
+        expect(screen.getByText('final')).toBeInTheDocument();
+    })
 });
+
