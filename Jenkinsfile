@@ -35,13 +35,10 @@ pipeline {
                 echo 'finished testing'
             }
         }
-
-        stage('Push Image') {
-            steps {
-                withCredentials([usernamePassword(credentialsId: registryCredential, usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
-                    sh "docker login -u ${DOCKER_USERNAME} -p ${DOCKER_PASSWORD}"
-                    sh "docker push graph-tools-frontend"
-                }
+        
+        stage('Push image') {
+            withDockerRegistry([ credentialsId: registryCredential, url: "" ]) {
+                bat "docker push zanielsen162/graph-tools-frontend:latest"
             }
         }
 
