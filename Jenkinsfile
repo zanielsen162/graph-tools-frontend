@@ -30,7 +30,7 @@ pipeline {
         stage('Run Jest Tests') {
             steps {
                 script {
-                    sh "docker run --rm -v $PWD:/app -w /app ${registry}:${dockerImageTag} npm test"
+                    sh "docker run --rm -v ${env.WORKSPACE}:/app -w /app ${registry}:${dockerImageTag} npm test"
                 }
             }
         }
