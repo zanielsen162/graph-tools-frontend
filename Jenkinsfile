@@ -19,18 +19,18 @@ pipeline {
             }
         }
 
-        // stage('Build Image') {
-        //     steps {
-        //         script {
-        //             dockerImage = docker.build("${registry}:${dockerImageTag}")
-        //         }
-        //     }
-        // }
+        stage('Build Image') {
+            steps {
+                script {
+                    dockerImage = docker.build("${registry}:${dockerImageTag}")
+                }
+            }
+        }
 
         stage('Run Jest Tests') {
             steps {
                 script {
-                    sh "docker run --rm -v ${env.WORKSPACE}:/app -w /app ${registry}:${dockerImageTag} npm test"
+                    sh "docker run --rm -v /app -w /app ${registry}:${dockerImageTag} --pull=never npm test"
                 }
             }
         }
