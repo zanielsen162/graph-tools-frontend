@@ -67,6 +67,7 @@ const RepeatableFormRow = <T extends Record<string, any>>({
 
         <div className='flex flex-row items-center gap-2'>
             <button
+                data-testid='add-entry'
                 onClick={addEntry}
                 className="text-green-600 hover:underline"
                 onMouseEnter={()=> setHoverAdd(true)}
@@ -75,6 +76,7 @@ const RepeatableFormRow = <T extends Record<string, any>>({
                 {hoverAdd ? <MdAddCircle className="inline-block text-xl" /> : <MdAddCircleOutline className="inline-block text-xl" />}
             </button>
             <button
+                data-testid='remove-entry'
                 onClick={removeLastEntry}
                 className="text-green-600 hover:underline"
                 onMouseEnter={()=> setHoverRemove(true)}

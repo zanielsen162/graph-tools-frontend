@@ -52,7 +52,7 @@ const GeneratePage = () => {
         <FormRow key='basic-structure'
             entries={[
                 <InputTextbox key='n' type='numeric' label='Vertex Set Size (n)' value={formData.size.vertexSetSize} randomFunc={() => setFormData(prev => ({ ...prev, size: { ...prev.size, vertexSetSize: generateRandomNumber(0, 100) }}))} onChange={(val) => setFormData((prev) => ({ ...prev, size: { ...prev.size, vertexSetSize: Number(val) }}))} />,
-                <InputTextbox key='n' type='numeric' label='Edge Set Size (m)' value={formData.size.edgeSetSize} randomFunc={() => setFormData(prev => ({ ...prev, size: { ...prev.size, edgeSetSize: generateRandomNumber(min, max) }}))} onChange={(val) => setFormData((prev) => ({ ...prev, size: { ...prev.size, edgeSetSize: Number(val) }}))} />,
+                <InputTextbox key='m' type='numeric' label='Edge Set Size (m)' value={formData.size.edgeSetSize} randomFunc={() => setFormData(prev => ({ ...prev, size: { ...prev.size, edgeSetSize: generateRandomNumber(min, max) }}))} onChange={(val) => setFormData((prev) => ({ ...prev, size: { ...prev.size, edgeSetSize: Number(val) }}))} />,
             ]} 
             title='Basic Structure'
         />,

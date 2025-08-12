@@ -1,6 +1,10 @@
 pipeline {
     agent any
 
+    options {
+        skipStagesAfterUnstable()
+    }
+
     environment {
         registry = 'zanielsen162/graph-tools-frontend'
         registryCredential = 'docker-personal'
@@ -15,20 +19,27 @@ pipeline {
             }
         }
 
-        stage('Build image') {
+        stage('Build Image') {
             steps {
                 script {
-                    dockerImage = docker.build("${registry}:${dockerImageTag}")
+                    sh "docker build --tag ${registry} --pull --force-rm --no-cache ."
+                }
+            }
+        }
+
+        stage('Run Jest Tests') {
+            steps {
+                script {
+                    sh "docker run --rm -v /app -w /app ${registry} npm test"
                 }
             }
         }
 
         stage('Push Image') {
             steps {
-                script {
-                    docker.withRegistry('https://registry.hub.docker.com', registryCredential) {
-                        dockerImage.push()
-                    }
+                withCredentials([usernamePassword(credentialsId: registryCredential, usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
+                    sh "docker login -u ${DOCKER_USERNAME} -p ${DOCKER_PASSWORD}"
+                    sh "docker push ${registry}"
                 }
             }
         }
@@ -42,7 +53,7 @@ pipeline {
             }
         }
 
-        stage('Testing') {
+        stage('Testing Container') {
             steps {
                 sh 'sleep 10 && curl -v http://192.168.49.2:31000/health 2>&1 | grep -Po "HTTP\\S+ [0-9]{3} .*"'
             }
