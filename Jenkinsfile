@@ -35,10 +35,12 @@ pipeline {
                 echo 'finished testing'
             }
         }
-        
+
         stage('Push image') {
-            withDockerRegistry([ credentialsId: registryCredential, url: "" ]) {
-                bat "docker push zanielsen162/graph-tools-frontend:latest"
+            steps{
+                withDockerRegistry([ credentialsId: registryCredential, url: "" ]) {
+                    bat "docker push zanielsen162/graph-tools-frontend:latest"
+                }
             }
         }
 
