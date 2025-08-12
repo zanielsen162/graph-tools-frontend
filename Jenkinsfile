@@ -1,9 +1,5 @@
 pipeline {
-    agent {
-        kubernetes {
-            inheritFrom 'docker'
-        }
-    }
+    agent any
 
     options {
         skipStagesAfterUnstable()
@@ -33,7 +29,7 @@ pipeline {
 
         stage('Run Jest Tests') {
             steps {
-                container('docker') {
+                script {
                     sh "docker run --rm -v $PWD:/app -w /app ${registry}:${dockerImageTag} npm test"
                 }
             }
