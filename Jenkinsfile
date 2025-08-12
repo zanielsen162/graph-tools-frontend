@@ -19,13 +19,13 @@ pipeline {
             }
         }
 
-        stage('Build Image') {
-            steps {
-                script {
-                    dockerImage = docker.build("${registry}:${dockerImageTag}")
-                }
-            }
-        }
+        // stage('Build Image') {
+        //     steps {
+        //         script {
+        //             dockerImage = docker.build("${registry}:${dockerImageTag}")
+        //         }
+        //     }
+        // }
 
         stage('Run Jest Tests') {
             steps {
