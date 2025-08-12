@@ -19,18 +19,18 @@ pipeline {
             }
         }
 
-        // stage('Build Image') {
-        //     steps {
-        //         script {
-        //             dockerImage = docker.build("${registry}:${dockerImageTag}")
-        //         }
-        //     }
-        // }
+        stage('Build Image') {
+            steps {
+                script {
+                    sh 'docker build --tag graph-tools-frontend --pull --force-rm --no-cache .'
+                }
+            }
+        }
 
         stage('Run Jest Tests') {
             steps {
                 script {
-                    sh "docker run --rm -v /app -w /app ${registry}:${dockerImageTag} npm test"
+                    sh "docker run --rm -v /app -w /app graph-tools-frontend npm test"
                 }
             }
         }
