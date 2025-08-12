@@ -22,7 +22,7 @@ pipeline {
         stage('Build Image') {
             steps {
                 script {
-                    sh 'docker build --tag graph-tools-frontend --pull --force-rm --no-cache .'
+                    sh 'docker build --tag zanielsen162/graph-tools-frontend --pull --force-rm --no-cache .'
                 }
             }
         }
@@ -30,16 +30,17 @@ pipeline {
         stage('Run Jest Tests') {
             steps {
                 script {
-                    sh "docker run --rm -v /app -w /app graph-tools-frontend npm test"
+                    sh "docker run --rm -v /app -w /app zanielsen162/graph-tools-frontend npm test"
                 }
                 echo 'finished testing'
             }
         }
 
-        stage('Push image') {
-            steps{
-                withDockerRegistry([ credentialsId: registryCredential, url: "" ]) {
-                    bat "docker push zanielsen162/graph-tools-frontend:latest"
+        stage('Push Image') {
+            steps {
+                withCredentials([usernamePassword(credentialsId: registryCredential, usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
+                    sh "docker login -u ${DOCKER_USERNAME} -p ${DOCKER_PASSWORD}"
+                    sh "docker push zanielsen162/graph-tools-frontend"
                 }
             }
         }
