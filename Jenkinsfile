@@ -1,5 +1,13 @@
 pipeline {
-    agent any
+    agent {
+        kubernetes {
+            inheritFrom 'docker'
+        }
+    }
+
+    options {
+        skipStagesAfterUnstable()
+    }
 
     environment {
         registry = 'zanielsen162/graph-tools-frontend'
@@ -15,7 +23,7 @@ pipeline {
             }
         }
 
-        stage('Build image') {
+        stage('Build Image') {
             steps {
                 script {
                     dockerImage = docker.build("${registry}:${dockerImageTag}")
@@ -25,10 +33,8 @@ pipeline {
 
         stage('Run Jest Tests') {
             steps {
-                script {
-                    dockerImage.inside {
-                        sh 'npm test'
-                    }
+                container('docker') {
+                    sh "docker run --rm -v $PWD:/app -w /app ${registry}:${dockerImageTag} npm test"
                 }
             }
         }
