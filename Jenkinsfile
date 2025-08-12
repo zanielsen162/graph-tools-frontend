@@ -32,11 +32,13 @@ pipeline {
                 script {
                     sh "docker run --rm -v /app -w /app graph-tools-frontend npm test"
                 }
+                echo 'finished testing'
             }
         }
 
         stage('Push Image') {
             steps {
+                echo 'pushing image...'
                 script {
                     docker.withRegistry('https://registry.hub.docker.com', registryCredential) {
                         dockerImage.push()
