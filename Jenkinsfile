@@ -38,11 +38,9 @@ pipeline {
 
         stage('Push Image') {
             steps {
-                echo 'pushing image...'
-                script {
-                    docker.withRegistry('https://registry.hub.docker.com', registryCredential) {
-                        dockerImage.push()
-                    }
+                withCredentials([usernamePassword(credentialsId: registryCredential, usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
+                    sh "docker login -u ${DOCKER_USERNAME} -p ${DOCKER_PASSWORD}"
+                    sh "docker push graph-tools-frontend"
                 }
             }
         }
@@ -56,10 +54,9 @@ pipeline {
             }
         }
 
-        stage('Testing') {
+        stage('Testing Container') {
             steps {
                 sh 'sleep 10 && curl -v http://192.168.49.2:31000/health 2>&1 | grep -Po "HTTP\\S+ [0-9]{3} .*"'
-                sh ''
             }
         }
     }
