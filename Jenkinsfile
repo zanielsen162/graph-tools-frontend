@@ -1,61 +1,46 @@
 pipeline {
-    agent any
-
+    agent {
+        kubernetes {
+            inheritFrom 'podman'
+        }
+    }
     options {
         skipStagesAfterUnstable()
     }
-
-    environment {
-        registry = 'zanielsen162/graph-tools-frontend'
-        registryCredential = 'docker-personal'
-        dockerImageTag = 'latest'
-    }
-
     stages {
-        stage('Check Installs') {
+        stage('Build') {
             steps {
-                sh 'docker --version'
-                sh 'kubectl version --client'
+                container('podman') {
+                    sh 'podman build --format docker --tag graph-tools-frontend --pull --force-rm --no-cache .'
+                }
             }
         }
-
-        stage('Build Image') {
+        stage('Test') {
             steps {
-                script {
-                    sh "docker build --tag ${registry} --pull --force-rm --no-cache ."
+                container('podman') { 
+                    sh 'podman run -d --name=graph-tools-frontend --rm --pull=never -p 3000:3000 graph-tools-frontend' 
+                    sh 'sleep 10 && curl -v http://localhost:3000/health 2>&1 | grep -Po "HTTP\\S+ [0-9]{3} .*"'
+                    sh 'podman exec graph-tools-frontend npm test'
+                }
+            }
+            post {
+                always {
+                    container('podman') {                        
+                        sh 'podman rm -fv graph-tools-frontend'
+                    }
                 }
             }
         }
 
-        stage('Run Jest Tests') {
+        stage('Deploy - Staging') {
             steps {
-                script {
-                    sh "docker run --rm -v /app -w /app ${registry} npm test"
-                }
+                echo 'Deploying staging....'
             }
         }
 
-        stage('Push Image') {
+        stage('Deploy - Production') {
             steps {
-                withCredentials([usernamePassword(credentialsId: registryCredential, usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
-                    sh "docker login -u ${DOCKER_USERNAME} -p ${DOCKER_PASSWORD}"
-                    sh "docker push ${registry}"
-                }
-            }
-        }
-
-        stage('Deploying Container to Kubernetes') {
-            steps {
-                withCredentials([file(credentialsId: 'kube-config', variable: 'KUBECONFIG')]) {
-                    sh 'kubectl apply -n graph-tools -f k8s/deployment.yaml'
-                    sh 'kubectl apply -n graph-tools -f k8s/service.yaml'
-                }
-            }
-        }
-
-        stage('Testing Container') {
-            steps {
-                sh 'sleep 10 && curl -v http://192.168.49.2:31000/health 2>&1 | grep -Po "HTTP\\S+ [0-9]{3} .*"'
+                echo 'Deploying production....'
             }
         }
     }
