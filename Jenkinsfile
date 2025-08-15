@@ -13,7 +13,7 @@ pipeline {
                 }
             }
         }
-        
+
         stage('Test') {
             steps {
                 script { 
@@ -24,9 +24,7 @@ pipeline {
             }
             post {
                 always {
-                    container('podman') {                        
-                        sh 'podman rm -fv graph-tools-frontend'
-                    }
+                    sh 'podman rm -fv graph-tools-frontend'
                 }
             }
         }
