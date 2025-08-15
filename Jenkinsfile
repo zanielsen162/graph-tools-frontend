@@ -8,7 +8,9 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                sh 'podman build --format docker --tag graph-tools-frontend --pull --force-rm --no-cache .'
+                script {
+                    sh 'podman build --format docker --tag graph-tools-frontend --pull --force-rm --no-cache .'
+                }
             }
         }
         // stage('Test') {
