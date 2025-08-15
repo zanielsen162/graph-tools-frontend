@@ -9,7 +9,7 @@ pipeline {
         stage('Build') {
             steps {
                 script {
-                    sh 'podman build --format docker --tag graph-tools-frontend --pull --force-rm --no-cache .'
+                    sh 'podman build --memory=6g --format docker --tag graph-tools-frontend --pull --force-rm --no-cache .'
                 }
             }
         }
