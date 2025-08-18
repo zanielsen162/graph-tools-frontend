@@ -18,7 +18,6 @@ pipeline {
             steps {
                 script { 
                     sh 'podman run -d --name=graph-tools-frontend --rm --pull=never -p 3000:3000 graph-tools-frontend' 
-                    sh 'sleep 10 && curl -v http://localhost:3000/health 2>&1 | grep "^< HTTP/.* [0-9][0-9][0-9]"'
                     sh 'podman exec graph-tools-frontend npm test'
                 }
             }
@@ -29,15 +28,16 @@ pipeline {
             }
         }
 
-        stage('Deploy - Staging') {
+        stage('Deploy to Minikube') {
             steps {
-                echo 'Deploying staging....'
+                sh 'kubectl apply -f k8s/deployment.yaml'
+                sh 'kubectl apply -f k8s/service.yaml'
             }
         }
 
-        stage('Deploy - Production') {
+        stage('Test Deployment') {
             steps {
-                echo 'Deploying production....'
+                sh 'sleep 10 && curl -v http://192.168.49.2:31000/health 2>&1 | grep "^< HTTP/.* [0-9][0-9][0-9]"'
             }
         }
     }
