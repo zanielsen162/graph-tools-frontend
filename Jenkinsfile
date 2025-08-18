@@ -13,32 +13,32 @@ pipeline {
                 }
             }
         }
-        // stage('Test') {
-        //     steps {
-        //         container('podman') { 
-        //             sh 'podman run -d --name=graph-tools-frontend --rm --pull=never -p 3000:3000 graph-tools-frontend' 
-        //             sh 'sleep 10 && curl -v http://localhost:3000/health 2>&1 | grep -Po "HTTP\\S+ [0-9]{3} .*"'
-        //             sh 'podman exec graph-tools-frontend npm test'
-        //         }
-        //     }
-        //     post {
-        //         always {
-        //             container('podman') {                        
-        //                 sh 'podman rm -fv graph-tools-frontend'
-        //             }
-        //         }
-        //     }
-        // }
 
-        stage('Deploy - Staging') {
+        stage('Test') {
             steps {
-                echo 'Deploying staging....'
+                script { 
+                    sh 'podman run -d --name=graph-tools-frontend --rm --pull=never -p 3000:3000 graph-tools-frontend' 
+                    sh 'podman exec graph-tools-frontend npm test'
+                }
+            }
+            post {
+                always {
+                    sh 'podman rm -fv graph-tools-frontend'
+                }
             }
         }
 
-        stage('Deploy - Production') {
+        stage('Deploy to Minikube') {
             steps {
-                echo 'Deploying production....'
+                sh 'kubectl apply -f k8s/namespace-dev.yaml'
+                sh 'kubectl apply -f k8s/deployment.yaml'
+                sh 'kubectl apply -f k8s/service.yaml'
+            }
+        }
+
+        stage('Test Deployment') {
+            steps {
+                sh 'sleep 10 && curl -v http://graph-tools-frontend-service.graph-tools-dev:3000/health 2>&1 | grep "^< HTTP/.* [0-9][0-9][0-9]"'
             }
         }
     }
