@@ -38,7 +38,10 @@ pipeline {
 
         stage('Test Deployment') {
             steps {
-                sh 'sleep 10 && curl -v http://10.0.2.15:31000/health 2>&1 | grep "^< HTTP/.* [0-9][0-9][0-9]"'
+                script {
+                    def minikubeIp = sh(script: 'minikube ip', returnStdout: true).trim()
+                    sh "sleep 10 && curl -v http://${minikubeIp}:31000/health 2>&1 | grep \"^< HTTP/.* [0-9][0-9][0-9]\""
+                }
             }
         }
     }
