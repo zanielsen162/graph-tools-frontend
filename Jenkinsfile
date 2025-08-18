@@ -28,6 +28,16 @@ pipeline {
             }
         }
 
+        stage('Push Image') {
+            steps {
+                withCredentials([usernamePassword(credentialsId: 'dockerhub-credentials', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
+                    sh "podman login docker.io -u ${DOCKER_USERNAME} -p ${DOCKER_PASSWORD}"
+                    sh 'podman tag graph-tools-frontend docker.io/zanielsen162/graph-tools-frontend:latest'
+                    sh 'podman push docker.io/zanielsen162/graph-tools-frontend:latest'
+                }
+            }
+        }
+
         stage('Deploy to Minikube') {
             steps {
                 sh 'kubectl apply -f k8s/namespace-dev.yaml'
