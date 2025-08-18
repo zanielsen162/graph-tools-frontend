@@ -20,11 +20,6 @@ pipeline {
                     sh 'podman exec graph-tools-frontend npm test'
                 }
             }
-            post {
-                always {
-                    sh 'podman rm -fv graph-tools-frontend'
-                }
-            }
         }
 
         stage('Push Image') {
