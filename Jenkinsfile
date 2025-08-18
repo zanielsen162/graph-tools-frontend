@@ -17,13 +17,22 @@ pipeline {
         stage('Test') {
             steps {
                 script { 
-                    sh 'podman run -d --name=graph-tools-frontend --rm --pull=never -p 3000:3000 graph-tools-frontend' 
                     sh 'podman exec graph-tools-frontend npm test'
                 }
             }
             post {
                 always {
                     sh 'podman rm -fv graph-tools-frontend'
+                }
+            }
+        }
+
+        stage('Push Image') {
+            steps {
+                withCredentials([usernamePassword(credentialsId: 'dockerhub-credentials', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
+                    sh "podman login docker.io -u ${DOCKER_USERNAME} -p ${DOCKER_PASSWORD}"
+                    sh 'podman tag graph-tools-frontend docker.io/zanielsen162/graph-tools-frontend:latest'
+                    sh 'podman push docker.io/zanielsen162/graph-tools-frontend:latest'
                 }
             }
         }
