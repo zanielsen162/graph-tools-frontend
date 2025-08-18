@@ -4,6 +4,7 @@ metadata:
   name: graph-tools-frontend #The name of the Kubernetes Deployment to be created in the Kubernetes cluster
   labels:
     app: graph-tools-frontend
+  namespace: graph-tools-dev #The namespace in which the Kubernetes Deployment will be created
 spec:
   replicas: 2 #The number of pods to be created in the Kubernetes cluster for the React.js application container
   selector:
