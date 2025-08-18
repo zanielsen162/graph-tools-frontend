@@ -38,7 +38,7 @@ pipeline {
 
         stage('Test Deployment') {
             steps {
-                sh 'sleep 10 && curl -v http://192.168.49.2:31000/health 2>&1 | grep "^< HTTP/.* [0-9][0-9][0-9]"'
+                sh 'sleep 10 && curl -v http://10.0.2.15:31000/health 2>&1 | grep "^< HTTP/.* [0-9][0-9][0-9]"'
             }
         }
     }
