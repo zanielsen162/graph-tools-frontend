@@ -50,7 +50,7 @@ test('login available when user not signed in', async ({ page }) => {
         });
     });
 
-    await page.goto('http://localhost:3000/');
+    await page.goto(process.env.BASE_URL);
     await page.getByRole('link', { name: 'Home' }).click();
     await page.getByRole('link', { name: 'Login' }).click();
     await expect(page.getByRole('heading', { name: 'Sign in to your account' })).toBeVisible();
@@ -79,7 +79,7 @@ test('login not available when user is signed in', async ({ page }) => {
         });
     });
 
-    await page.goto('http://localhost:3000/');
+    await page.goto(process.env.BASE_URL);
 
     await expect(page.getByRole('heading', { name: 'Graph Tools' })).toBeVisible();
     await expect(page.getByRole('button', { name: 'Logout' })).toBeVisible();
@@ -100,7 +100,7 @@ test('login and logout with credentials', async ({ page }) => {
         });
     });
 
-    await page.goto('http://localhost:3000/');
+    await page.goto(process.env.BASE_URL);
     await page.getByRole('link', { name: 'Home' }).click();
     await page.getByRole('link', { name: 'Login' }).click();
     await expect(page.getByRole('heading', { name: 'Sign in to your account' })).toBeVisible();
