@@ -17,9 +17,10 @@ pipeline {
         stage('Test') {
             steps {
                 script {
-                    sh 'podman run -d -p 3000:3000 --name graph-tools-frontend-test graph-tools-frontend'
+                    sh 'podman run -d --network=host --name graph-tools-frontend-test graph-tools-frontend'
                     sh 'podman build -t e2e-test-image -f Containerfile.test .'
                     sh 'podman run --network=host --rm e2e-test-image'
+                    sh 'podman rm -fv graph-tools-frontend-test'
                 }
             }
         }

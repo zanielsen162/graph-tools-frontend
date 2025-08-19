@@ -1,4 +1,4 @@
-FROM node:18-alpine
+FROM ubuntu/node:18-24.04_edge
 
 WORKDIR /app
 COPY . .
