@@ -16,14 +16,11 @@ pipeline {
 
         stage('Test') {
             steps {
-                script { 
-                    sh 'podman run -d --name=graph-tools-frontend --rm --pull=never -p 3000:3000 graph-tools-frontend' 
-                    sh 'podman exec graph-tools-frontend npm test'
-                }
-            }
-            post {
-                always {
-                    sh 'podman rm -fv graph-tools-frontend'
+                script {
+                    sh 'podman run -d --network=host -p 3000:3000 --name graph-tools-frontend-test graph-tools-frontend'
+                    sh 'podman build -t test-image -f Containerfile.test .'
+                    sh 'podman run --network=host --rm test-image'
+                    sh 'podman rm -fv graph-tools-frontend-test'
                 }
             }
         }

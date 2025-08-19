@@ -1,0 +1,16 @@
+FROM mcr.microsoft.com/playwright:v1.39.0-focal 
+
+WORKDIR /usr/src/app 
+
+COPY package*.json ./ 
+
+RUN npm ci 
+ 
+COPY . . 
+
+RUN npx playwright install --with-deps 
+
+ENV CI=true 
+ENV BASE_URL=http://localhost:3000
+
+CMD npm test; npx playwright test
