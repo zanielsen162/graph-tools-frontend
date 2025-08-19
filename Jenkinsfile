@@ -29,10 +29,14 @@ pipeline {
         }
 
         stage('End to End Test') {
+            agent { 
+                any { 
+                    image 'mcr.microsoft.com/playwright:v1.54.0-noble' 
+                } 
+            }
             steps {
                 script {
                     sh 'podman run -d --name=graph-tools-frontend --rm --pull=never -p 3000:3000 graph-tools-frontend'
-                    sh 'podman exec graph-tools-frontend npx install playwright'
                     sh 'podman exec graph-tools-frontend npx playwright test'
                 }
             }
