@@ -6,6 +6,7 @@ WORKDIR /app
 
 COPY package*.json ./
 RUN npm ci
+RUN npm test
 RUN npm run build
 
 EXPOSE 3000
