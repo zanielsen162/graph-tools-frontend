@@ -7,15 +7,37 @@ import { FormRow, RepeatableFormRow } from '@/components/molecules/molecules';
 import { InputTextbox, Dropdown, Checkbox, Button } from '@/components/atoms/atoms';
 import { Form, GraphView } from '@/components/organisms/organisms';
 import { generateRandomNumber, selectRandomItem, generateRandomGraphData, validStructures } from '@/components/RandomFunctions';
+import { useUser } from '@/context/UserProvider'
 import * as types from '@/CustomTypes'
+import axios from 'axios';
 
 const GeneratePage = () => {
     const [availableStructures, setAvailableStructures] = useState(structures_supported);
     const [canCheck, setCanCheck] = useState<types.GraphTypes>(() => types.createDefaultGraphTypes(true));
     const [formData, setFormData] = useState<types.Graph>(() => types.createDefaultGraph());
+    const { user } = useUser();
+    const [graph, setGraph] = useState<any>(test_graph_1)
 
     const { vertexSetSize } = formData.size
     const { tournament, bipartite, complete, acyclic, connected, directed } = formData.types;
+
+    const handleSave = async () => {
+        try {
+            const submitResponse = await axios.post('http://localhost:5000/save_graph', {formData, user});
+        } catch {
+            alert('Save failed')
+        }
+    }
+
+    const handleGenerate = async () => {
+        try {
+            const generateResponse = await axios.post('http://localhost:5000/generate_graph', {formData});
+            console.log(generateResponse.data)
+            setGraph(generateResponse.data)
+        } catch {
+            alert('Generate Failed')
+        }
+    }
 
     useEffect(() => {
         const validStructuresList = structures_supported.filter(structure => 
@@ -93,13 +115,13 @@ const GeneratePage = () => {
                     onChange={(val) => setFormData((prev) => ({ ...prev, types: { ...prev.types, bipartite: val, },}))}
                     disabled={!canCheck.bipartite}
                 />,
-                <Checkbox
-                    key='tournament'
-                    label="Tournament"
-                    checked={formData.types.tournament}
-                    onChange={(val) => setFormData((prev) => ({ ...prev, types: { ...prev.types, tournament: val, },}))}
-                    disabled={!canCheck.tournament}
-                />
+                // <Checkbox
+                //     key='tournament'
+                //     label="Tournament"
+                //     checked={formData.types.tournament}
+                //     onChange={(val) => setFormData((prev) => ({ ...prev, types: { ...prev.types, tournament: val, },}))}
+                //     disabled={!canCheck.tournament}
+                // />
             ]} 
         />,
         <RepeatableFormRow<types.Structure>
@@ -143,24 +165,34 @@ const GeneratePage = () => {
                         onChange={(val) => update(index, 'amount', Number(val))}
                         randomFunc={() => update(index, 'amount', (generateRandomNumber(1, vertexSetSize / entry.size)))}
                     />
+                ),
+                (entry, index, update) => (
+                    <Checkbox
+                        key={`free-${index}`}
+                        label="Free?"
+                        checked={entry.free}
+                        onChange={(val) => update(index, 'free', Boolean(val))}
+                        stacked={true}
+                        disabled={entry.amount != 0}
+                    />
                 )
             ]}
         />
     ]
 
     const submissionComponents = [
-        <Button key='generate' buttonText='Generate Graph' level='primary' onClick={() => console.log(JSON.stringify(formData, null, 2))} />,
+        <Button key='generate' buttonText='Generate Graph' level='primary' onClick={handleGenerate} />,
         <Button key='random' buttonText='Random' level='secondary' onClick={() => setFormData(generateRandomGraphData(structures_supported, generateRandomNumber(0,5)))} />,
-        <Button key='save' buttonText='Save' level='secondary' onClick={() => console.log(formData)} />
+        <Button key='save' buttonText='Save' level='secondary' onClick={handleSave} disabled={user == null} />
     ]
 
     const formBuilt = <Form entries={formRows} final={<FormRow entries={submissionComponents} />} />
-    const graphBuilt =  <GraphView nodeEdgeJSON={test_graph_1} />
+    const graphBuilt =  <GraphView nodeEdgeJSON={graph} />
 
     return (
         <BuilderDisplay
             title="Graph Generation"
-            description="Use the form below to generate a graph and visualize it."
+            description="Use the form below to generate a graph and visualize it. Note that if any structures are marked as free, the basic structure options will not be considered. Also, if contradictory structures are added, behavior will be somewhat random."
             form={formBuilt}
             display={graphBuilt}
         />

@@ -39,8 +39,8 @@ export default function LoginPage() {
         <ProtectedRoute allowUsers={false}>
             <div className="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
                 <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-                    <h2 className="mt-10 text-center text-2xl/9 font-bold tracking-tight text-gray-900">Sign in to your account</h2>
-                    <p className='text-gray-600 text-center'>Signing into your account will allow you to save graphs and view previous results.</p>
+                    <h2 className="mt-10 text-center text-2xl/9 font-bold tracking-tight text-gray-900 dark:text-white">Sign in to your account</h2>
+                    <p className='text-gray-600 dark:text-gray-200 text-center'>Signing into your account will allow you to save graphs and view previous results.</p>
                 </div>
 
                 <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm space-y-6">

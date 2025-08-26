@@ -9,16 +9,27 @@ function selectRandomItem(items: any[]) {
     return items[generateRandomNumber(0, items.length - 1)];
 }
 
-function generateRandomStructures(structures: types.StructureType[], count: number, maxSize: number) {
-    const amount = generateRandomNumber(1, 5);
-    const size = generateRandomNumber(1, Math.floor(maxSize / amount));
+function generateRandomStructures(
+    structures: types.StructureType[],
+    count: number,
+    maxSize: number
+) {
     if (structures.length === 0) return [];
-    return Array.from({ length: count }, () => ({
-        structure: selectRandomItem(structures),
-        size: size,
-        amount: amount
-    }));
+
+    return Array.from({ length: count }, () => {
+        const free = selectRandomItem([true, false]);
+        const amount = free ? 0 : generateRandomNumber(1, 5);
+        const size = amount == 0 ? generateRandomNumber(1, Math.floor(maxSize)) : generateRandomNumber(1, Math.floor(maxSize / amount))
+
+        return {
+            structure: selectRandomItem(structures),
+            amount: amount,
+            size: size,
+            free: free
+        };
+    });
 }
+
 
 function generateRandomValidCombination() {
     while (true) {

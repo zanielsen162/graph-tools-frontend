@@ -26,11 +26,12 @@ interface Structure  {
     structure: StructureType,
     size: number,
     amount: number
+    free: boolean
 }
 
 interface StructureType  {
     value: string,
-    label: string
+    label: string,
 }
 
 interface GraphTypes  {
@@ -68,7 +69,7 @@ export function createDefaultGraphTypes(val: boolean): GraphTypes {
 export function createDefaultStructureType(): StructureType {
     return {
         value: '',
-        label: ''
+        label: '',
     }
 }
 
@@ -76,7 +77,8 @@ export function createDefaultStructure(): Structure {
     return {
         structure: createDefaultStructureType(),
         size: 0,
-        amount: 0
+        amount: 0,
+        free: false
     }
 }
 
