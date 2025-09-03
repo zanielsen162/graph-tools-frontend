@@ -11,7 +11,8 @@ type InputTextboxProps = Omit<React.ComponentProps<"input">, "className" | "onCh
   secondLabel?: string;
   secondLabelLink?: string;
   value: string | number;
-  onChange: (value: string) => void;
+  onChange?: (value: string) => void;
+  disabled?: boolean;
 };
 
 const InputTextbox = ({
@@ -22,7 +23,8 @@ const InputTextbox = ({
   secondLabel,
   secondLabelLink,
   value,
-  onChange,
+  onChange=() => {},
+  disabled,
   ...props
 }: InputTextboxProps) => {
 
@@ -46,7 +48,7 @@ const InputTextbox = ({
         {label && <label className="mb-2 text-sm align-baseline font-medium text-gray-700 dark:text-gray-300">
           {label}
         </label>}
-        {randomFunc && (
+        {randomFunc && !disabled && (
           <button
             type="button"
             className="align-baseline text-xs text-gray-500 mb-1.5"
@@ -74,8 +76,9 @@ const InputTextbox = ({
           {...props}
           value={value}
           onChange={(e) => onChange(e.target.value)}
+          disabled={disabled}
         />
-        {type === 'numeric' && (
+        {type === 'numeric' && !disabled && (
           <div className="flex flex-col">
             <button
               type="button"

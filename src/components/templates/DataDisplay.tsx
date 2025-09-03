@@ -11,8 +11,8 @@ type DataDisplayProps = {
     description?: string;
     data: DataProps[];
     checkboxes?: boolean;
-    buttons?: { title: string, onClick: () => void; };
-    tableButtons?: { title: string, displayType: string, onClick: () => void; }[];
+    buttons?: { title: string | React.ReactElement, onClick: () => void; }[];
+    tableButtons?: { title: string, displayType: string, onClick: (selectedItems: DataProps[]) => void; }[];
 };
 
 const DataDisplay = ( { title, subtitle, description, data, checkboxes, buttons, tableButtons } : DataDisplayProps) => {
@@ -38,7 +38,7 @@ const DataDisplay = ( { title, subtitle, description, data, checkboxes, buttons,
     }
 
     const rows = modData.map((item, index) => (
-        <TableRow
+    <TableRow
             key={index}
             title={item.title}
             subtitle={item.subtitle}
@@ -47,14 +47,9 @@ const DataDisplay = ( { title, subtitle, description, data, checkboxes, buttons,
                 data: item.checked || false,
                 onChange: () => handleCheckboxChange(index)
             }}
-            button={{
-                title: buttons?.title || '',
-                onClick: buttons?.onClick || (() => {})
-            }}
+            button={item.buttons ?? buttons ?? []}  // use row buttons first, fallback to general buttons
         />
     ));
-
-    
 
     return (
         <div className="p-10 w-full flex flex-col">
@@ -73,7 +68,7 @@ const DataDisplay = ( { title, subtitle, description, data, checkboxes, buttons,
                 
                 {tableButtons && (
                     <div className='flex flex-col'>
-                        <hr className="my-4 bg-gray-200 border-2 dark:bg-gray-700"></hr>
+                        <hr className="my-4 border-2"></hr>
                         <div className='flex flex-row w-full justify-between'>
                             <Button
                                 buttonText={
@@ -97,7 +92,10 @@ const DataDisplay = ( { title, subtitle, description, data, checkboxes, buttons,
                                         key={index}
                                         buttonText={item.title}
                                         level={item.displayType}
-                                        onClick={item.onClick}
+                                        onClick={() => {
+                                            const selectedItems = modData.filter(row => row.checked);
+                                            item.onClick(selectedItems); // <-- modify tableButtons type to accept items
+                                        }}
                                         auto={true}
                                     />
                                 ))}

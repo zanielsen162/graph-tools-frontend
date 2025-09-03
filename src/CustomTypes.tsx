@@ -113,6 +113,11 @@ type DataProps = {
     subtitle?: string;
     body: React.ReactElement;
     checked?: boolean;
+    id?: number;
+    buttons?: { 
+        title: string | React.ReactElement; 
+        onClick: () => void; 
+    }[];
 };
 
 export type {

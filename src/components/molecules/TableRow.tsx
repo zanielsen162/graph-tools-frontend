@@ -7,7 +7,7 @@ type TableRowProps = {
     subtitle?: string;
     body?: React.ReactElement;
     checkbox?: { onChange: (value: boolean) => void, data: boolean };
-    button?: { title: string, onClick: () => void; }
+    button: { title: string | React.ReactElement, onClick: () => void; }[]
 }
 
 const TableRow = ({ title, subtitle, body, checkbox, button }: TableRowProps) => {
@@ -30,11 +30,14 @@ const TableRow = ({ title, subtitle, body, checkbox, button }: TableRowProps) =>
                     </div>
                 </div>
                 <div className='flex flex-row gap-2'>
-                    { button && <Button
-                        buttonText='Analyze'
-                        level='secondary'
-                        onClick={button.onClick}
-                    /> }
+                    {button.length > 0 && button.map((item, index) => (
+                        <Button
+                            key={index}
+                            buttonText={item.title}
+                            level='secondary'
+                            onClick={item.onClick}
+                        />
+                    ))}
                     <button onClick={toggleHidden}>
                         { hidden ? <IoIosArrowDropdown size={20} /> : <IoIosArrowDropup size={20} /> }
                     </button>

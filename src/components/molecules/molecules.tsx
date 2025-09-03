@@ -3,6 +3,8 @@ import FormRow from '@/components/molecules/FormRow';
 import RepeatableFormRow from '@/components/molecules/RepeatableFormRow';
 import TableRow from '@/components/molecules/TableRow'
 import SearchBar from '@/components/molecules/SearchBar'
+import GraphInfoDisplay from '@/components/molecules/GraphInfoDisplay'
+
 
 
 export {
@@ -10,5 +12,6 @@ export {
     FormRow,
     RepeatableFormRow,
     TableRow,
-    SearchBar
+    SearchBar,
+    GraphInfoDisplay
 };

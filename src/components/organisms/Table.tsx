@@ -13,12 +13,12 @@ const Table = ({ title, subtitle, description, entries }: TableProps) => {
                 {subtitle && <h2 className='text-xl font-semibold mb-1'>{subtitle}</h2>}
                 {description && <p className='text-gray-600 dark:text-gray-300 mb-4'>{description}</p>}
                 <div className=''>
-                    {entries.length === 0 && (<p className='p-4'>No entries.</p>)}
+                    
+                    {entries.length === 0 && ( <div> <hr className="my-4 bg-gray-200 border-2 dark:bg-gray-700"></hr>  <p className='p-4'>No entries.</p> </div>)}
                     {entries.map((EntryComponent, index) => (
                         <div key={index} className=''>
                             <hr className="my-4 bg-gray-200 border-2 dark:bg-gray-700"></hr>
-                            {EntryComponent}
-                            
+                            {EntryComponent}  
                         </div>
                     ))}
                     <hr className="my-4 bg-gray-200 border-2 dark:bg-gray-700"></hr>

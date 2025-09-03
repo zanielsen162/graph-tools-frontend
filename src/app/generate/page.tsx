@@ -18,14 +18,14 @@ const GeneratePage = () => {
     const [canCheck, setCanCheck] = useState<types.GraphTypes>(() => types.createDefaultGraphTypes(true));
     const [formData, setFormData] = useState<types.Graph>(() => types.createDefaultGraph());
     const { user } = useUser();
-    const [graph, setGraph] = useState<any>(test_graph_1)
+    const [graph, setGraph] = useState<{ nodes: any[], edges: any[] }>(test_graph_1)
 
     const { vertexSetSize } = formData.size
     const { tournament, bipartite, complete, acyclic, connected, directed } = formData.types;
 
     const handleSave = async () => {
         try {
-            const submitResponse = await axios.post('http://localhost:5000/save_graph', {formData, user});
+            const submitResponse = await axios.post('http://localhost:5000/save_graph', {formData, graph, user});
         } catch {
             alert('Save failed')
         }
@@ -34,12 +34,15 @@ const GeneratePage = () => {
     const handleGenerate = async () => {
         try {
             const generateResponse = await axios.post('http://localhost:5000/generate_graph', {formData});
-            console.log(generateResponse.data)
             setGraph(generateResponse.data)
         } catch {
             alert('Generate Failed')
         }
     }
+
+    useEffect(() => {
+        setFormData(prev => ({ ...prev, size: { ...prev.size, edgeSetSize: graph.edges.length }}))
+    }, [graph])
 
     useEffect(() => {
         const validStructuresList = structures_supported.filter(structure => 
@@ -95,35 +98,35 @@ const GeneratePage = () => {
                     label="Directed"
                     checked={formData.types.directed}
                     onChange={(val) => setFormData((prev) => ({ ...prev, types: { ...prev.types, directed: val, },}))}
-                    disabled={!canCheck.directed}
+                    strikethrough={!canCheck.directed}
                 />,
                 <Checkbox
                     key='connected'
                     label="Connected"
                     checked={formData.types.connected}
                     onChange={(val) => setFormData((prev) => ({ ...prev, types: { ...prev.types, connected: val, },}))}
-                    disabled={!canCheck.connected}
+                    strikethrough={!canCheck.connected}
                 />,
                 <Checkbox
                     key='complete'
                     label="Complete"
                     checked={formData.types.complete}
                     onChange={(val) => setFormData((prev) => ({ ...prev, types: { ...prev.types, complete: val, },}))}
-                    disabled={!canCheck.complete}
+                    strikethrough={!canCheck.complete}
                 />,
                 <Checkbox
                     key='acyclic'
                     label='Acyclic'
                     checked={formData.types.acyclic}
                     onChange={(val) => setFormData((prev) => ({ ...prev, types: { ...prev.types, acyclic: val, },}))}
-                    disabled={!canCheck.acyclic}
+                    strikethrough={!canCheck.acyclic}
                 />,
                 <Checkbox
                     key='bipartite'
                     label="Bipartite"
                     checked={formData.types.bipartite}
                     onChange={(val) => setFormData((prev) => ({ ...prev, types: { ...prev.types, bipartite: val, },}))}
-                    disabled={!canCheck.bipartite}
+                    strikethrough={!canCheck.bipartite}
                 />,
                 // <Checkbox
                 //     key='tournament'

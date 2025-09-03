@@ -20,11 +20,6 @@ const SearchBar = ({ data, sendToParent} : SearchBarProps) => {
             )
         );
 
-        console.log(
-            data.filter((item) =>
-                item.title.toLowerCase().includes(value.toLowerCase())
-            )
-        )
     }, [value, data, sendToParent]);
 
     return (
