@@ -17,6 +17,7 @@ interface User  {
 }
 
 interface Graph  {
+    name: string,
     size: GraphSize,
     types: GraphTypes,
     inducedStructures: Structure[]
@@ -84,6 +85,7 @@ export function createDefaultStructure(): Structure {
 
 export function createDefaultGraph(): Graph {
     return {
+        name: '',
         size: createDefaultGraphSize(),
         types: createDefaultGraphTypes(false),
         inducedStructures: [createDefaultStructure()]
@@ -105,6 +107,14 @@ export function createDefaultUserRegister(): UserRegister {
     }
 }
 
+
+type DataProps = {
+    title: string;
+    subtitle?: string;
+    body: React.ReactElement;
+    checked?: boolean;
+};
+
 export type {
     UserLogin,
     User,
@@ -113,5 +123,6 @@ export type {
     Structure,
     GraphTypes,
     GraphSize,
-    UserRegister
+    UserRegister,
+    DataProps
 }

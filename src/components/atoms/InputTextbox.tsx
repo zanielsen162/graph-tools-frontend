@@ -7,7 +7,7 @@ type InputTextboxProps = Omit<React.ComponentProps<"input">, "className" | "onCh
   placeholder?: string;
   type: string;
   randomFunc?: () => void;
-  label: string;
+  label?: string;
   secondLabel?: string;
   secondLabelLink?: string;
   value: string | number;
@@ -43,9 +43,9 @@ const InputTextbox = ({
   return (
     <div className={`flex flex-col w-full`}>
       <div className={ `flex flex-row items-center ${ secondLabel ? 'justify-between' : ''} gap-2`}>
-        <label className="mb-2 text-sm align-baseline font-medium text-gray-700 dark:text-gray-300">
+        {label && <label className="mb-2 text-sm align-baseline font-medium text-gray-700 dark:text-gray-300">
           {label}
-        </label>
+        </label>}
         {randomFunc && (
           <button
             type="button"

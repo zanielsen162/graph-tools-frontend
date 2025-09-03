@@ -10,6 +10,8 @@ import { generateRandomNumber, selectRandomItem, generateRandomGraphData, validS
 import { useUser } from '@/context/UserProvider'
 import * as types from '@/CustomTypes'
 import axios from 'axios';
+import { generateUsername } from 'unique-username-generator'
+
 
 const GeneratePage = () => {
     const [availableStructures, setAvailableStructures] = useState(structures_supported);
@@ -71,6 +73,14 @@ const GeneratePage = () => {
         (vertexSetSize * (vertexSetSize - 1)) / 2;
 
     const formRows = [
+        <FormRow
+            entries={[
+                <InputTextbox key='name' type='text' label='Name' value={formData.name} 
+                    onChange={(val) => setFormData((prev) => ({ ...prev, name: val }))} 
+                    randomFunc={() => setFormData(prev => ({...prev, name: generateUsername()}))}
+                />
+            ]}
+        />,
         <FormRow key='basic-structure'
             entries={[
                 <InputTextbox key='n' type='numeric' label='Vertex Set Size (n)' value={formData.size.vertexSetSize} randomFunc={() => setFormData(prev => ({ ...prev, size: { ...prev.size, vertexSetSize: generateRandomNumber(0, 100) }}))} onChange={(val) => setFormData((prev) => ({ ...prev, size: { ...prev.size, vertexSetSize: Number(val) }}))} />,

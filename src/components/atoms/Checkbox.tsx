@@ -2,7 +2,7 @@ import React from 'react';
 import { RiCheckboxCircleFill, RiCheckboxBlankCircleLine  } from "react-icons/ri";
 
 type CheckboxProps = {
-    label: string;
+    label?: string;
     checked: boolean;
     onChange: (value: boolean) => void;
     disabled?: boolean;
@@ -41,7 +41,7 @@ const Checkbox = ({ label, checked, onChange, disabled, stacked }: CheckboxProps
                         <RiCheckboxBlankCircleLine data-testid='unchecked-icon' className="text-gray-400 text-lg" onClick={() => (!checked)} />
                     )}
                 </button>
-                <p className={`ml-2 text-sm align-baseline font-medium text-gray-700 dark:text-gray-300 ${disabled ? 'line-through' : ''}`}>{label}</p>
+                {label && (<p className={`ml-2 text-sm align-baseline font-medium text-gray-700 dark:text-gray-300 ${disabled ? 'line-through' : ''}`}>{label}</p>)}
             </div>
         );
     }

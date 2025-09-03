@@ -1,4 +1,5 @@
 import * as types from '@/CustomTypes'
+import { generateUsername } from 'unique-username-generator'
 
 function generateRandomNumber(min: number, max: number) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -107,6 +108,7 @@ function generateRandomGraphData(structures: types.StructureType[], count: numbe
     const edgeSetSize = generateRandomNumber(min, max);
 
     return {
+        name: generateUsername(),
         size: {
             vertexSetSize: vertexSetSize,
             edgeSetSize: edgeSetSize
