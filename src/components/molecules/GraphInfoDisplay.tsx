@@ -1,9 +1,9 @@
 import React from 'react';
 import { Graph } from '@/CustomTypes';
-import { InputTextbox, Checkbox } from '@/components/atoms/atoms'
+import { InputTextbox, Checkbox, InputTextArea } from '@/components/atoms/atoms'
 
 type GraphInfoDisplayProps = {
-    data: Graph;
+    data: Graph | Graph & { notes: string };
 }
 
 const GraphInfoDisplay = (data: Graph ) => {
@@ -65,6 +65,12 @@ const GraphInfoDisplay = (data: Graph ) => {
                         </div>
                     ))}
                 </div>
+                {data.notes && (<InputTextArea
+                    label='Notes'
+                    type='numeric'
+                    value={data.notes}
+                    disabled={true}
+                />)}
             </div>
         </div>
     )

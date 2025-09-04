@@ -31,7 +31,7 @@ interface Structure  {
 }
 
 interface StructureType  {
-    value: string,
+    value: string | number,
     label: string,
 }
 

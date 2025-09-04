@@ -10,7 +10,7 @@ import * as types from '@/CustomTypes'
 import { GraphInfoDisplay } from '@/components/molecules/molecules'
 import { FaRegTrashCan } from "react-icons/fa6";
 
-type GraphWithID = types.Graph & { id: number }
+type GraphWithID = types.Graph & { id: number, notes: string }
 
 export default function Saved() {
   const [data, setData] = useState<GraphWithID[]>([]);

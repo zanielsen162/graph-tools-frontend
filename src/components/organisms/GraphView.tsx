@@ -33,36 +33,43 @@ type GraphViewProps = {
 }
 
 const GraphView = ({ title, subtitle, description, nodeEdgeJSON, layoutSpec='random', style=defaultStyle}: GraphViewProps) => {
-    
-    const graphRef = useRef(null)
-    const layoutOptions = useMemo(() => layoutSpec === 'null' ? { name: layoutSpec, padding: 30 } : {
-        name: layoutSpec,
-        padding: 30,
-        fit: true,
-    }, [layoutSpec]);
+  const graphRef = useRef<HTMLDivElement | null>(null);
 
-    useEffect(() => {
-        cytoscape({
-            container: graphRef.current,
-            elements: nodeEdgeJSON,
-            style: style,
-            layout: layoutOptions,
-        });
-    }, [nodeEdgeJSON, layoutOptions, style]);
+  const layoutOptions = useMemo(() => layoutSpec === 'null' ? { name: layoutSpec, padding: 30 } : {
+    name: layoutSpec,
+    padding: 30,
+    fit: true,
+  }, [layoutSpec]);
+
+  useEffect(() => {
+    if (!graphRef.current) return;
+
+    const cy = cytoscape({
+      container: graphRef.current,
+      elements: nodeEdgeJSON,
+      style: style,
+      layout: layoutOptions,
+    });
 
 
-    return (
-        <div className="">
-            <Fragment>
-                {title && (<h1>{title}</h1>)}
-                {subtitle && (<h2>{subtitle}</h2>)}
-                {description && (<p>{description}</p>)}
+    setTimeout(() => {
+      cy.resize();
+      cy.fit();
+    }, 0);
 
-                <div ref={graphRef} className='outline outline-3 rounded outline-green-600 dark:outline-green-700 w-full h-[70vh]'>
-                </div>
-            </Fragment>
-        </div>
-    )
-}
+    return () => cy.destroy();
+  }, [nodeEdgeJSON, layoutOptions, style]);
+
+  return (
+    <div className="flex flex-col h-full min-h-0 m-1">
+      {title && <h1 className="text-lg font-bold">{title}</h1>}
+      {subtitle && <h2 className="text-sm">{subtitle}</h2>}
+      {description && <p className="text-sm text-gray-600 mb-2">{description}</p>}
+
+      <div ref={graphRef} className="outline outline-3 rounded outline-green-600 dark:outline-green-700 w-full flex-1 min-h-0" />
+    </div>
+  );
+};
+
 
 export default GraphView;

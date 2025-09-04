@@ -4,7 +4,7 @@ import test_graph_1 from '@/data/test-graph-1.json';
 import structures_supported from '@/data/structures-supported.json';
 import { BuilderDisplay } from '@/components/templates/templates';
 import { FormRow, RepeatableFormRow } from '@/components/molecules/molecules';
-import { InputTextbox, Dropdown, Checkbox, Button } from '@/components/atoms/atoms';
+import { InputTextbox, Dropdown, Checkbox, Button, InputTextArea } from '@/components/atoms/atoms';
 import { Form, GraphView } from '@/components/organisms/organisms';
 import { generateRandomNumber, selectRandomItem, generateRandomGraphData, validStructures } from '@/components/RandomFunctions';
 import { useUser } from '@/context/UserProvider'
@@ -12,11 +12,17 @@ import * as types from '@/CustomTypes'
 import axios from 'axios';
 import { generateUsername } from 'unique-username-generator'
 
+type analyzeData = {
+    id: number;
+    notes: string;
+}
 
 const GeneratePage = () => {
     const [availableStructures, setAvailableStructures] = useState(structures_supported);
     const [canCheck, setCanCheck] = useState<types.GraphTypes>(() => types.createDefaultGraphTypes(true));
     const [formData, setFormData] = useState<types.Graph>(() => types.createDefaultGraph());
+    const [analyzeFormData, setAnalyzeFormData] = useState<analyzeData>({id: -1, notes: ''})
+
     const { user } = useUser();
     const [graph, setGraph] = useState<{ nodes: any[], edges: any[] }>(test_graph_1)
 
@@ -28,6 +34,15 @@ const GeneratePage = () => {
             const submitResponse = await axios.post('http://localhost:5000/save_graph', {formData, graph, user});
         } catch {
             alert('Save failed')
+        }
+    }
+
+    const handleAnalyzeSave = async () => {
+        try {
+            const submitResponse = await axios.post('http://localhost:5000/update_graph', { analyzeFormData, user });
+        } catch (err) {
+            console.error(err);
+            alert('Failed to update graph');
         }
     }
 
@@ -194,19 +209,77 @@ const GeneratePage = () => {
     ]
 
     const submissionComponents = [
-        <Button key='generate' buttonText='Generate Graph' level='primary' onClick={handleGenerate} />,
+        <Button key='generate' buttonText='Generate' level='primary' onClick={handleGenerate} />,
         <Button key='random' buttonText='Random' level='secondary' onClick={() => setFormData(generateRandomGraphData(structures_supported, generateRandomNumber(0,5)))} />,
         <Button key='save' buttonText='Save' level='secondary' onClick={handleSave} disabled={user == null} />
     ]
 
+    const [dropDownOptions, setDropDownOptions] = useState<{ label: string, value: number }[]>([]);
+
     const formBuilt = <Form entries={formRows} final={<FormRow entries={submissionComponents} />} />
     const graphBuilt =  <GraphView nodeEdgeJSON={graph} />
+
+    const analyzeFormRows = [
+        <Dropdown
+            key="select-graph"
+            options={dropDownOptions}
+            label="Select Graph"
+            value={analyzeFormData.id}
+            onChange={(val: number | string) => {
+                const selected = dropDownOptions.find(opt => opt.value === val) || null;
+                setAnalyzeFormData((prev) => ({...prev, id: selected ? selected.value : -1}));
+            }}
+        />,
+        <InputTextArea
+            key="notes"
+            label="Notes"
+            type="textarea"
+            value={analyzeFormData.notes}
+            onChange={(val) => setAnalyzeFormData((prev) => ({ ...prev, notes: val }))}
+        />
+    ];
+
+    const analyzeSubmission = [
+        <Button key='save' buttonText='Save' level='primary' onClick={handleAnalyzeSave} disabled={user == null} />
+    ]
+
+    const analyzeForm = <Form entries={analyzeFormRows} final={<FormRow entries={analyzeSubmission} />} />;
+
+    useEffect(() => {
+        if (user) {
+            retrieveGraphLabels();
+        }
+    }, [user]);
+
+    const pageNames = user ? ['Generate', 'Analyze'] : ['Generate'];
+    const pages = user ? [formBuilt, analyzeForm] : [formBuilt];
+
+
+
+    const retrieveGraphLabels = async () => {
+        if (user) {
+            try {
+                const loadResponse = await axios.post('http://localhost:5000/load_identifiers', { user })
+                const transformedData: { label: string, value: number }[] = loadResponse.data.map((item: any) => ({
+                    label: item.name,
+                    value: item.id
+                }));
+                setDropDownOptions(transformedData);
+            } catch (err) {
+                alert('Loading graphs failed');
+                console.error(err);
+            }
+        }
+    }
+
+    
 
     return (
         <BuilderDisplay
             title="Graph Generation"
             description="Use the form below to generate a graph and visualize it. Note that if any structures are marked as free, the basic structure options will not be considered. Also, if contradictory structures are added, behavior will be somewhat random."
-            form={formBuilt}
+            pages={pages}
+            pageNames={pageNames}
             display={graphBuilt}
         />
     )

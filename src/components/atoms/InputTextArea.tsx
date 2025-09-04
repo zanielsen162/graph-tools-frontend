@@ -3,7 +3,7 @@ import { FaShuffle } from "react-icons/fa6";
 import { IoIosArrowUp, IoIosArrowDown } from "react-icons/io";
 import { IconContext } from "react-icons";
 
-type InputTextboxProps = Omit<React.ComponentProps<"input">, "className" | "onChange" | "value"> & {
+type InputTextAreaProps = Omit<React.ComponentProps<"input">, "className" | "onChange" | "value"> & {
   placeholder?: string;
   type: string;
   randomFunc?: () => void;
@@ -15,7 +15,7 @@ type InputTextboxProps = Omit<React.ComponentProps<"input">, "className" | "onCh
   disabled?: boolean;
 };
 
-const InputTextbox = ({
+const InputTextArea = ({
   placeholder = '',
   type,
   randomFunc,
@@ -26,7 +26,7 @@ const InputTextbox = ({
   onChange=() => {},
   disabled,
   ...props
-}: InputTextboxProps) => {
+}: InputTextAreaProps) => {
 
   function increment() {
     if (type === 'numeric') {
@@ -67,16 +67,15 @@ const InputTextbox = ({
       </div>
 
       <div className='flex flex-row items-center gap-2'>
-        <input
-          id='input-textbox'
-          data-testid='input-textbox'
-          type={type}
-          placeholder={placeholder}
-          className="focus:outline-none mx-1 w-full no-spinner focus:ring-2 focus:ring-blue-500 border border-gray-300 rounded-lg p-2 dark:bg-gray-800 dark:border-gray-600 dark:text-gray-200"
-          {...props}
-          value={value}
-          onChange={(e) => onChange(e.target.value)}
-          disabled={disabled}
+        <textarea
+            id="input-textbox"
+            data-testid="input-textbox"
+            placeholder={placeholder}
+            className="focus:outline-none mx-1 mb-1 w-full resize-none focus:ring-2 focus:ring-blue-500 border border-gray-300 rounded-lg p-2 dark:bg-gray-800 dark:border-gray-600 dark:text-gray-200"
+            value={value}
+            onChange={(e) => onChange(e.target.value)}
+            disabled={disabled}
+            rows={5}
         />
         {type === 'numeric' && !disabled && (
           <div className="flex flex-col">
@@ -103,4 +102,4 @@ const InputTextbox = ({
   );
 };
 
-export default InputTextbox;
+export default InputTextArea;
