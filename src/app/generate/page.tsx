@@ -55,6 +55,23 @@ const GeneratePage = () => {
         }
     }
 
+    const handleLoadGraph = async () => {
+        try {
+            const generateResponse = await axios.post('http://localhost:5000/get_graph', { user, analyzeFormData });
+            const newGraph = {
+                nodes: generateResponse.data.nodes,
+                edges: generateResponse.data.edges
+            }
+            setGraph(newGraph);
+            setAnalyzeFormData(prev => ({
+                ...prev,
+                notes: generateResponse.data.notes
+            }));
+        } catch {
+            alert('Generate Failed')
+        } 
+    }
+
     useEffect(() => {
         setFormData(prev => ({ ...prev, size: { ...prev.size, edgeSetSize: graph.edges.length }}))
     }, [graph])
