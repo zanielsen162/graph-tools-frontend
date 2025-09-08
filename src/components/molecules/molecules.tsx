@@ -4,6 +4,7 @@ import RepeatableFormRow from '@/components/molecules/RepeatableFormRow';
 import TableRow from '@/components/molecules/TableRow'
 import SearchBar from '@/components/molecules/SearchBar'
 import GraphInfoDisplay from '@/components/molecules/GraphInfoDisplay'
+import Hero from '@/components/molecules/Hero'
 
 
 
@@ -13,5 +14,6 @@ export {
     RepeatableFormRow,
     TableRow,
     SearchBar,
-    GraphInfoDisplay
+    GraphInfoDisplay,
+    Hero
 };

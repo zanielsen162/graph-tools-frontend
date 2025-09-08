@@ -15,7 +15,7 @@ const TableRow = ({ title, subtitle, body, checkbox, button }: TableRowProps) =>
     const toggleHidden = () => setHidden(prev => !prev);
 
     return (
-        <div className='flex flex-col'>
+        <div className='transition ease-in-out dark:text-white bg-gray-200 rounded-lg text-sm px-1 py-3 me-2 dark:bg-gray-800'>
             <div className='flex flex-row items-center justify-between gap-2 px-4'>
                 <div className='flex flex-row gap-4'>
                     { checkbox && (

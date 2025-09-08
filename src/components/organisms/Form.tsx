@@ -11,7 +11,7 @@ type FormProps = {
 const Form = ({ title, subtitle, description, entries, final }: FormProps) => {
   return (
     <div
-      className="p-6 m-1 relative rounded outline outline-3 outline-green-600 dark:outline-green-700 flex flex-col"
+      className="p-6 m-1 relative rounded outline outline-3 outline-green-600 dark:outline-green-700 flex flex-col bg-inherit"
       style={{ maxHeight: '90vh' }}
     >
       <div className="overflow-y-auto flex-1 min-h-0">
@@ -29,7 +29,7 @@ const Form = ({ title, subtitle, description, entries, final }: FormProps) => {
       </div>
 
       {final && (
-        <div className="sticky bottom-0 left-0 right-0 p-2 z-10 bg-white dark:bg-black">
+        <div className="sticky bottom-0 left-0 right-0 p-2 z-10 bg-inherit">
           <hr className="h-px my-4 bg-gray-200 border-0 dark:bg-gray-700" />
           {final}
         </div>

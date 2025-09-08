@@ -69,8 +69,8 @@ export default function LoginPage() {
         <ProtectedRoute allowUsers={false}>
             <div className="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
                 <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-                    <h2 className="mt-10 text-center text-2xl/9 font-bold tracking-tight text-gray-900">Create an account</h2>
-                    <p className='text-gray-600 text-center'>Create an account to save your graph data.</p>
+                    <h2 className="mt-10 text-center text-2xl/9 font-bold tracking-tight text-gray-900 dark:text-white">Create an account</h2>
+                    <p className='text-gray-600 dark:text-gray-200 text-center'>Create an account to save your graph data.</p>
                 </div>
 
                 <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm space-y-6">
@@ -132,8 +132,8 @@ export default function LoginPage() {
                     
 
                     <p className="mt-10 text-center text-sm/6 text-gray-500">
-                        Don&apos;t have an account?
-                    <a href="/signup" className="font-semibold text-green-700 hover:text-green-800"> Sign Up Here</a>
+                        Already have an account?
+                    <a href="/login" className="font-semibold text-green-700 hover:text-green-800"> Login Here</a>
                     </p>
                 </div>
             </div>

@@ -76,10 +76,6 @@ export default function Saved() {
     id: item.id, // add this
     buttons: [
       {
-        title: 'Analyze',
-        onClick: () => {}
-      },
-      {
         title: <FaRegTrashCan style={{ color: 'red' }} />,
         onClick: async () => {
           await handleDelete(item.id);

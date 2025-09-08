@@ -32,6 +32,7 @@ const GeneratePage = () => {
     const handleSave = async () => {
         try {
             const submitResponse = await axios.post('http://localhost:5000/save_graph', {formData, graph, user});
+            retrieveGraphLabels();
         } catch {
             alert('Save failed')
         }
@@ -55,9 +56,9 @@ const GeneratePage = () => {
         }
     }
 
-    const handleLoadGraph = async () => {
+    const handleLoadGraph = async (id: number) => {
         try {
-            const generateResponse = await axios.post('http://localhost:5000/get_graph', { user, analyzeFormData });
+            const generateResponse = await axios.post('http://localhost:5000/get_graph', { user, id });
             const newGraph = {
                 nodes: generateResponse.data.nodes,
                 edges: generateResponse.data.edges
@@ -68,7 +69,7 @@ const GeneratePage = () => {
                 notes: generateResponse.data.notes
             }));
         } catch {
-            alert('Generate Failed')
+            alert('Load Failed')
         } 
     }
 
@@ -245,6 +246,7 @@ const GeneratePage = () => {
             onChange={(val: number | string) => {
                 const selected = dropDownOptions.find(opt => opt.value === val) || null;
                 setAnalyzeFormData((prev) => ({...prev, id: selected ? selected.value : -1}));
+                handleLoadGraph(selected?.value ?? -1);
             }}
         />,
         <InputTextArea
@@ -288,8 +290,6 @@ const GeneratePage = () => {
             }
         }
     }
-
-    
 
     return (
         <BuilderDisplay

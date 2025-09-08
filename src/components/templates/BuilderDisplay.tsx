@@ -1,5 +1,6 @@
 import React from 'react';
 import { TabView } from '@/components/organisms/organisms';
+import  {Hero } from '@/components/molecules/molecules';
 
 type BuilderDisplayProps = {
     title: string;
@@ -13,10 +14,13 @@ type BuilderDisplayProps = {
 const BuilderDisplay = ({title, subtitle, description, pages, pageNames, display}: BuilderDisplayProps) => {
     return (
         <div className="p-10 w-full flex flex-col items-center">
-            <main className="flex flex-col row-start-2 items-center w-full sm:items-start">
-                {title && <h1 className='text-2xl font-bold mb-1'>{title}</h1>}
-                {subtitle && <h2 className='text-xl text-gray-800 italic font-semibold mb-1'>{subtitle}</h2>}
-                {description && <p className='text-gray-600 dark:text-gray-300 mb-4'>{description}</p>}
+            <main className="flex flex-col row-start-2 gap-10 items-center w-full sm:items-start">
+                <Hero
+                    title='Generate Graph'
+                    subtitle='Basic tools for custom graph generation.'
+                    description='Note the following current limitations. If any free structures are inputted, all other custom variables beyond vertex set size will be ignored.'
+                    center={false}
+                />
                 
                 <div className='flex md:flex-row flex-col gap-4 w-full items-stretch'>
                     <div className='flex-[1] w-full flex flex-col min-h-0'>

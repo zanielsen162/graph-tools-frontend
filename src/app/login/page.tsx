@@ -1,6 +1,6 @@
 'use client';
 import React from 'react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Button, InputTextbox } from '@/components/atoms/atoms';
 import { useRouter } from 'next/navigation';
 import axios from 'axios';
@@ -13,6 +13,14 @@ export default function LoginPage() {
     const router = useRouter();
     const [formData, setFormData] = useState<types.UserLogin>(types.createDefaultUserLogin);
     const [loginError, setLoginError] = useState<string | null>(null);
+
+    const queryParams = new URLSearchParams(window.location.search);
+    const error = queryParams.get("error");
+
+    useEffect(() => {
+        if (error === 'failed') { setLoginError('Email already associated with account.'); }
+    }, [error])
+
 
     const handleSubmitDirect = async (event: React.MouseEvent<HTMLButtonElement>) => {
         event.preventDefault();

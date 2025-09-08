@@ -1,6 +1,6 @@
 import React from 'react';
 import { Table } from '@/components/organisms/organisms'
-import { SearchBar, TableRow } from '@/components/molecules/molecules'
+import { SearchBar, TableRow, Hero } from '@/components/molecules/molecules'
 import { Button, Checkbox } from '@/components/atoms/atoms'
 import { useState } from 'react';
 import { DataProps } from '../../CustomTypes'
@@ -54,9 +54,11 @@ const DataDisplay = ( { title, subtitle, description, data, checkboxes, buttons,
     return (
         <div className="p-10 w-full flex flex-col">
             <main className="flex flex-col w-full px-6">
-                {title && <h1 className='text-2xl text-center font-bold mb-1'>{title}</h1>}
-                {subtitle && <h2 className='text-xl text-center dark:text-gray-400 text-gray-800 italic font-semibold mb-1'>{subtitle}</h2>}
-                {description && <p className='text-gray-600 text-center dark:text-gray-300 mb-4'>{description}</p>}
+                <Hero
+                    title='Saved'
+                    subtitle='View your saved graphs'
+                    center={true}
+                />
                 
                 <div className='mx-20 pt-10 pb-4'>
                     <SearchBar 
@@ -67,8 +69,7 @@ const DataDisplay = ( { title, subtitle, description, data, checkboxes, buttons,
                 
                 
                 {tableButtons && (
-                    <div className='flex flex-col'>
-                        <hr className="my-4 border-2"></hr>
+                    <div className='flex flex-col my-4'>
                         <div className='flex flex-row w-full justify-between'>
                             <Button
                                 buttonText={

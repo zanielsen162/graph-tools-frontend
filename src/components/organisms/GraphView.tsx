@@ -21,6 +21,8 @@ const defaultStyle =
             }
         }
     ]
+  
+const defaultContainerStyle = 'outline outline-3 rounded outline-green-600 dark:outline-green-700 w-full flex-1 min-h-0'; 
 
 type GraphViewProps = {
     title?: string;
@@ -30,9 +32,10 @@ type GraphViewProps = {
     layoutSpec?: string;
     /* eslint-disable  @typescript-eslint/no-explicit-any */
     style?: any[];
+    containerStyle?: string;
 }
 
-const GraphView = ({ title, subtitle, description, nodeEdgeJSON, layoutSpec='random', style=defaultStyle}: GraphViewProps) => {
+const GraphView = ({ title, subtitle, description, nodeEdgeJSON, layoutSpec='random', style=defaultStyle, containerStyle=defaultContainerStyle}: GraphViewProps) => {
   const graphRef = useRef<HTMLDivElement | null>(null);
 
   const layoutOptions = useMemo(() => layoutSpec === 'null' ? { name: layoutSpec, padding: 30 } : {
@@ -66,7 +69,7 @@ const GraphView = ({ title, subtitle, description, nodeEdgeJSON, layoutSpec='ran
       {subtitle && <h2 className="text-sm">{subtitle}</h2>}
       {description && <p className="text-sm text-gray-600 mb-2">{description}</p>}
 
-      <div ref={graphRef} className="outline outline-3 rounded outline-green-600 dark:outline-green-700 w-full flex-1 min-h-0" />
+      <div ref={graphRef} className={containerStyle} />
     </div>
   );
 };

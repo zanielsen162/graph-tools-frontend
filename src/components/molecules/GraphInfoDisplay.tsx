@@ -7,7 +7,6 @@ type GraphInfoDisplayProps = {
 }
 
 const GraphInfoDisplay = ( data: Graph | Graph & { notes: string } ) => {
-    console.log(data)
     return (
         <div className='flex flex-col gap-2 py-4'>
             <div className='flex flex-col gap-2'>
