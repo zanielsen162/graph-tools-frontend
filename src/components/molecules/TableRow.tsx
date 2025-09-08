@@ -29,15 +29,18 @@ const TableRow = ({ title, subtitle, body, checkbox, button }: TableRowProps) =>
                         {subtitle && (<h4 className='italic text-sm'>{subtitle}</h4>)}
                     </div>
                 </div>
-                <div className='flex flex-row gap-2'>
+                <div className='flex flex-row gap-4'>
+                    <div className='flex flex-row'>
                     {button.length > 0 && button.map((item, index) => (
                         <Button
                             key={index}
                             buttonText={item.title}
                             level='secondary'
                             onClick={item.onClick}
+                            padding={2}
                         />
                     ))}
+                    </div>
                     <button onClick={toggleHidden}>
                         { hidden ? <IoIosArrowDropdown size={20} /> : <IoIosArrowDropup size={20} /> }
                     </button>

@@ -55,8 +55,8 @@ const DataDisplay = ( { title, subtitle, description, data, checkboxes, buttons,
         <div className="p-10 w-full flex flex-col">
             <main className="flex flex-col w-full px-6">
                 <Hero
-                    title='Saved'
-                    subtitle='View your saved graphs'
+                    title={title}
+                    subtitle={subtitle}
                     center={true}
                 />
                 

@@ -1,7 +1,5 @@
 'use client';
 import ProtectedRoute from "@/context/ProtectedRoute";
-import TableRow from "@/components/molecules/TableRow";
-import Table from "@/components/organisms/Table"
 import { useState, useEffect } from "react";
 import DataDisplay from "@/components/templates/DataDisplay";
 import axios from 'axios';
@@ -9,6 +7,7 @@ import { useUser } from '@/context/UserProvider'
 import * as types from '@/CustomTypes'
 import { GraphInfoDisplay } from '@/components/molecules/molecules'
 import { FaRegTrashCan } from "react-icons/fa6";
+import { IoShareSocialSharp } from "react-icons/io5";
 
 type GraphWithID = types.Graph & { id: number, notes: string }
 
@@ -64,6 +63,17 @@ export default function Saved() {
     }
   }
 
+  const postGraph = async (id: number) => {
+    console.log('called me')
+    try {
+      const postResponse = await axios.post('http://localhost:5000/post_graph', { id: id, user })
+      if (postResponse.data.status !== 200) { alert('Post Failed'); }
+    } catch (err) {
+      alert('Post failed. Please try again.');
+      console.error(err);
+    }
+  }
+
   useEffect(() => {
     if (user) {
       retrieveData();
@@ -80,6 +90,12 @@ export default function Saved() {
         onClick: async () => {
           await handleDelete(item.id);
           setData((prev) => prev.filter((g) => g.id !== item.id));
+        }
+      },
+      {
+        title: <IoShareSocialSharp />,
+        onClick: async () => {
+          await postGraph(item.id);
         }
       }
     ]
