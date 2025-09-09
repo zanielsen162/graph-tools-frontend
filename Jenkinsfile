@@ -17,10 +17,11 @@ pipeline {
         stage('Test') {
             steps {
                 script {
-                    sh 'podman run -d --network=host -p 3000:3000 --name graph-tools-frontend-test graph-tools-frontend'
-                    sh 'podman build -t test-image -f Containerfile.test .'
-                    sh 'podman run --network=host --rm test-image'
-                    sh 'podman rm -fv graph-tools-frontend-test'
+                    sh 'podman run -it --rm --pull=never localhost/graph-tools-frontend npm test --reporter=list'
+                    sh 'podman run -it --rm --pull=never localhost/graph-tools-frontend npx playwright test'
+                    sh 'podman run -d --name=graph-tools-frontend --rm --pull=never -p 3000:3000 localhost/lsit-selfportal-frontend'
+                    sh 'sleep 10 && curl -v http://localhost:3000/health 2>&1 | grep -P "HTTP\\S+\\s200\\s+[\\w\\s]+\\s*$"'
+
                 }
             }
             post {
