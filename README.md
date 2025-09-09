@@ -86,14 +86,8 @@ Unit tests for each component were implemented using [Jest](https://jestjs.io/do
 - Share graphs with user base
   
 ### Upcoming
-- Robust Analysis tools
-      - Locate induced structure
-      - Apply basic graph algorithms
-      - Add/remove edges and nodes
-      - Branching visualization
-- Improved Graph Generation
-      - Allow for free and not-free structures
-      - Overlap with basic attributes and induced structures
+- Robust Analysis tools: Locate induced structure, apply basic graph algorithms, add/remove edges and nodes, branching visualization
+- Improved Graph Generation: Allow for free and not-free structures, overlap with basic attributes and induced structures
 
 <details>
     <summary>Notes on Input Validation</summary>
