@@ -38,15 +38,15 @@ const DataDisplay = ( { title, subtitle, description, data, checkboxes, buttons,
     }
 
     const rows = modData.map((item, index) => (
-    <TableRow
+        <TableRow
             key={index}
             title={item.title}
             subtitle={item.subtitle}
             body={item.body}
-            checkbox={{ 
+            checkbox={checkboxes ?{ 
                 data: item.checked || false,
                 onChange: () => handleCheckboxChange(index)
-            }}
+            } : undefined}
             button={item.buttons ?? buttons ?? []}  // use row buttons first, fallback to general buttons
         />
     ));
@@ -57,6 +57,7 @@ const DataDisplay = ( { title, subtitle, description, data, checkboxes, buttons,
                 <Hero
                     title={title}
                     subtitle={subtitle}
+                    description={description}
                     center={true}
                 />
                 
@@ -84,6 +85,7 @@ const DataDisplay = ( { title, subtitle, description, data, checkboxes, buttons,
                                 level='secondary'
                                 auto={true}
                                 onClick={handleSelectAll}
+                                padding={true}
                             />
                             
 
@@ -95,9 +97,10 @@ const DataDisplay = ( { title, subtitle, description, data, checkboxes, buttons,
                                         level={item.displayType}
                                         onClick={() => {
                                             const selectedItems = modData.filter(row => row.checked);
-                                            item.onClick(selectedItems); // <-- modify tableButtons type to accept items
+                                            item.onClick(selectedItems);
                                         }}
                                         auto={true}
+                                        padding={true}
                                     />
                                 ))}
                             </div>

@@ -20,6 +20,7 @@ const TabView = ({ titles, pages } : TabViewProps) => {
             level={selected === index ? 'primary' : 'secondary'}
             onClick={() => setSelected(index)}
             auto={true}
+            padding={true}
           />
         ))}
       </div>

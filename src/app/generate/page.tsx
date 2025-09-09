@@ -24,6 +24,7 @@ const GeneratePage = () => {
     const [analyzeFormData, setAnalyzeFormData] = useState<analyzeData>({id: -1, notes: ''})
 
     const { user } = useUser();
+    /* eslint-disable  @typescript-eslint/no-explicit-any */
     const [graph, setGraph] = useState<{ nodes: any[], edges: any[] }>(test_graph_1)
 
     const { vertexSetSize } = formData.size
@@ -31,7 +32,7 @@ const GeneratePage = () => {
 
     const handleSave = async () => {
         try {
-            const submitResponse = await axios.post('http://localhost:5000/save_graph', {formData, graph, user});
+            await axios.post('http://localhost:5000/save_graph', {formData, graph, user});
             retrieveGraphLabels();
         } catch {
             alert('Save failed')
@@ -40,7 +41,7 @@ const GeneratePage = () => {
 
     const handleAnalyzeSave = async () => {
         try {
-            const submitResponse = await axios.post('http://localhost:5000/update_graph', { analyzeFormData, user });
+            await axios.post('http://localhost:5000/update_graph', { analyzeFormData, user });
         } catch (err) {
             console.error(err);
             alert('Failed to update graph');
@@ -109,7 +110,7 @@ const GeneratePage = () => {
         (vertexSetSize * (vertexSetSize - 1)) / 2;
 
     const formRows = [
-        <FormRow
+        <FormRow key='data-name'
             entries={[
                 <InputTextbox key='name' type='text' label='Name' value={formData.name} 
                     onChange={(val) => setFormData((prev) => ({ ...prev, name: val }))} 
@@ -279,7 +280,9 @@ const GeneratePage = () => {
         if (user) {
             try {
                 const loadResponse = await axios.post('http://localhost:5000/load_identifiers', { user })
-                const transformedData: { label: string, value: number }[] = loadResponse.data.map((item: any) => ({
+                const transformedData: { label: string, value: number }[] = loadResponse.data.map
+                /* eslint-disable  @typescript-eslint/no-explicit-any */
+                ((item: any) => ({
                     label: item.name,
                     value: item.id
                 }));

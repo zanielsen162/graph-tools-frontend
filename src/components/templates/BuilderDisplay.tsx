@@ -16,9 +16,9 @@ const BuilderDisplay = ({title, subtitle, description, pages, pageNames, display
         <div className="p-10 w-full flex flex-col items-center">
             <main className="flex flex-col row-start-2 gap-10 items-center w-full sm:items-start">
                 <Hero
-                    title='Generate Graph'
-                    subtitle='Basic tools for custom graph generation.'
-                    description='Note the following current limitations. If any free structures are inputted, all other custom variables beyond vertex set size will be ignored.'
+                    title={title}
+                    subtitle={subtitle}
+                    description={description}
                     center={false}
                 />
                 

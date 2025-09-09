@@ -1,12 +1,10 @@
 import React from 'react';
 import { Graph } from '@/CustomTypes';
 import { InputTextbox, Checkbox, InputTextArea } from '@/components/atoms/atoms'
+import { GraphView } from '@/components/organisms/organisms';
 
-type GraphInfoDisplayProps = {
-    data: Graph | Graph & { notes: string };
-}
-
-const GraphInfoDisplay = ( data: Graph | Graph & { notes: string } ) => {
+/* eslint-disable  @typescript-eslint/no-explicit-any */
+const GraphInfoDisplay = ( data: Graph | Graph & { notes: string } | Graph & { nodes: any[], edges: any[], useranem: string }) => {
     return (
         <div className='flex flex-col gap-2 py-4'>
             <div className='flex flex-col gap-2'>
@@ -64,12 +62,23 @@ const GraphInfoDisplay = ( data: Graph | Graph & { notes: string } ) => {
                         </div>
                     ))}
                 </div>
-                {data.notes && (<InputTextArea
+                {'notes' in data && data.notes && (<InputTextArea
                     label='Notes'
                     type='numeric'
                     value={data.notes}
                     disabled={true}
                 />)}
+
+                { 'nodes' in data && 'edges' in data &&
+                    data.nodes && data.edges && (
+                        <div className='flex flex-col h-[50vh] gap-2'>
+                        <GraphView
+                            nodeEdgeJSON={{ nodes: data.nodes, edges: data.edges }}
+                            containerStyle='w-full h-full focus:outline-none w-full resize-none focus:ring-2 focus:ring-blue-500 border border-gray-300 rounded-lg p-2 dark:bg-gray-800 dark:border-gray-600 dark:text-gray-200'
+                        />
+                        </div>
+                    )
+                }
             </div>
         </div>
     )

@@ -37,7 +37,6 @@ const TableRow = ({ title, subtitle, body, checkbox, button }: TableRowProps) =>
                             buttonText={item.title}
                             level='secondary'
                             onClick={item.onClick}
-                            padding={2}
                         />
                     ))}
                     </div>

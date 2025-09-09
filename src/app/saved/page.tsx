@@ -18,7 +18,7 @@ export default function Saved() {
   const retrieveData = async () => {
     if (user) { try {
       const loadResponse = await axios.post('http://localhost:5000/load_graphs', { user });
-
+      /* eslint-disable  @typescript-eslint/no-explicit-any */
       const transformedData: GraphWithID[] = loadResponse.data.map((item: any) => ({
         ...item,
         id: item.id,
@@ -47,7 +47,7 @@ export default function Saved() {
 
   const handleDelete = async (id: number) => {
     try {
-      const deleteResponse = await axios.post('http://localhost:5000/remove_graph', { id: [id], user })
+      await axios.post('http://localhost:5000/remove_graph', { id: [id], user })
     } catch (err) {
       alert('Delete failed');
       console.error(err);
@@ -56,7 +56,7 @@ export default function Saved() {
 
   const handleDeleteSelected = async (id: number[]) => {
     try {
-      const deleteResponse = await axios.post('http://localhost:5000/remove_graph', { id: id, user })
+      await axios.post('http://localhost:5000/remove_graph', { id: id, user })
     } catch (err) {
       alert('Delete failed');
       console.error(err);
@@ -64,7 +64,6 @@ export default function Saved() {
   }
 
   const postGraph = async (id: number) => {
-    console.log('called me')
     try {
       const postResponse = await axios.post('http://localhost:5000/post_graph', { id: id, user })
       if (postResponse.data.status !== 200) { alert('Post Failed'); }
@@ -108,6 +107,7 @@ export default function Saved() {
         title='Saved'
         subtitle='View your saved graphs.'
         data={rows}
+        checkboxes={true}
         tableButtons={[
           {
             title: "Delete Selected",

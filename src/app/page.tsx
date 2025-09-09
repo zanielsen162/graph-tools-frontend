@@ -16,10 +16,10 @@ export default function Home() {
         title='Graph Tools'
         subtitle='An interactive web app for exploring and analyzing graph data.'
         interactive={
-          <div className='flex flex-row'>
+          <div className='flex flex-col sm:flex-row sm:gap-0 gap-2'>
             <Button
               buttonText={
-                <div className='flex flex-row gap-2 items-center'>
+                <div className='flex flex-row gap-2 justify-center items-center'>
                   <p className=''>Get Started</p>
                   <FaArrowRight />
                 </div>
@@ -27,10 +27,11 @@ export default function Home() {
               onClick={() => { router.push('/generate'); }}
               auto={true}
               level='primary'
+              padding={true}
             />
             <Button
               buttonText={
-                <div className='flex flex-row gap-2 items-center'>
+                <div className='flex flex-row gap-2 items-center justify-center w-full'>
                   <p className=''>Sign Up</p>
                   <FaUser className='' />
                 </div>
@@ -38,6 +39,7 @@ export default function Home() {
               onClick={() => { router.push('/signup'); }}
               auto={true}
               level='secondary'
+              padding={true}
             />
           </div>
         }

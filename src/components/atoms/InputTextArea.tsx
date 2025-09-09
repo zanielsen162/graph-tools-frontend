@@ -25,7 +25,6 @@ const InputTextArea = ({
   value,
   onChange=() => {},
   disabled,
-  ...props
 }: InputTextAreaProps) => {
 
   function increment() {

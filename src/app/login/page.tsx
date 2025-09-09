@@ -14,12 +14,14 @@ export default function LoginPage() {
     const [formData, setFormData] = useState<types.UserLogin>(types.createDefaultUserLogin);
     const [loginError, setLoginError] = useState<string | null>(null);
 
-    const queryParams = new URLSearchParams(window.location.search);
-    const error = queryParams.get("error");
-
     useEffect(() => {
-        if (error === 'failed') { setLoginError('Email already associated with account.'); }
-    }, [error])
+        const queryParams = new URLSearchParams(window.location.search);
+        const error = queryParams.get("error");
+
+        if (error === "failed") {
+        setLoginError("Email already associated with account.");
+        }
+    }, []); 
 
 
     const handleSubmitDirect = async (event: React.MouseEvent<HTMLButtonElement>) => {
