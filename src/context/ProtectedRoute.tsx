@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { useUser } from "@/context/UserProvider";
 import axios from "axios";
 import Link from "next/link";
-import { useRouter } from 'next/navigation';
+import { useRouter } from "next/navigation";
 
 type ProtectedRouteProps = {
   children: React.ReactNode;
@@ -14,18 +14,27 @@ export default function ProtectedRoute({ children, allowUsers }: ProtectedRouteP
   const { user, setUser } = useUser();
   const router = useRouter();
 
+  // Check authentication on mount
   useEffect(() => {
     const checkAuth = async () => {
-        try {
-            const response = await axios.get('http://localhost:5000/verify', { withCredentials: true });
-            setUser(response.data);
-        } catch {
-            setUser(null);
-        }   
-    }
+      try {
+        const response = await axios.get("http://localhost:5000/verify", {
+          withCredentials: true,
+        });
+        setUser(response.data);
+      } catch {
+        setUser(null);
+      }
+    };
 
     checkAuth();
-  }, []);
+  }, [setUser]);
+
+  useEffect(() => {
+    if (!allowUsers && user) {
+      router.push("/");
+    }
+  }, [allowUsers, user, router]);
 
   if (allowUsers && !user) {
     return (
@@ -37,8 +46,6 @@ export default function ProtectedRoute({ children, allowUsers }: ProtectedRouteP
         </Link>
       </div>
     );
-  } else if (!allowUsers && user) {
-    router.push('/')
   }
 
   return <>{children}</>;

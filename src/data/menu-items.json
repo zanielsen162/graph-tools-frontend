@@ -10,5 +10,9 @@
     {
         "label": "Saved",
         "link": "/saved"
+    },
+    {
+        "label": "Shared",
+        "link": "/shared"
     }
 ]

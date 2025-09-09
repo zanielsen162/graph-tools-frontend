@@ -2,44 +2,54 @@ import { screen, fireEvent, render} from '@testing-library/react';
 import Checkbox from '../../../src/components/atoms/Checkbox'
 import '@testing-library/jest-dom';
 
+describe("Checkbox component", () => {
+  it("renders unchecked icon by default", () => {
+    render(<Checkbox checked={false} />);
+    expect(screen.getByTestId("unchecked-icon")).toBeInTheDocument();
+  });
 
-describe('Checkbox component', () => {
-  it('renders with given text', () => {
-    const onClick = jest.fn();
-    render(<Checkbox label='check me' checked={true} onChange={onClick} />);
-    expect(screen.getByText('check me')).toBeVisible();
-  })
+  it("renders checked icon when checked=true", () => {
+    render(<Checkbox checked={true} />);
+    expect(screen.getByTestId("checked-icon")).toBeInTheDocument();
+  });
 
-  it('displays checked when checked true', () => {
-    const onClick = jest.fn();
-    render(<Checkbox label='check me' checked={true} onChange={onClick} />);
-    const checkedDisplay = screen.getByTestId('checked-icon');
-    expect(checkedDisplay).toBeVisible();
-  })
+  it("renders label when provided", () => {
+    render(<Checkbox checked={false} label="My label" />);
+    expect(screen.getByText("My label")).toBeInTheDocument();
+  });
 
-  it('displays checked when checked not true', () => {
-    const onClick = jest.fn();
-    render(<Checkbox label='check me' checked={false} onChange={onClick} />);
-    const checkedDisplay = screen.getByTestId('unchecked-icon');
-    expect(checkedDisplay).toBeVisible();
-  })
+  it("applies line-through when strikethrough=true", () => {
+    render(<Checkbox checked={false} label="Strike me" strikethrough />);
+    const label = screen.getByText("Strike me");
+    expect(label).toHaveClass("line-through");
+  });
 
-  it('calls onClick when called', () => {
-    const onClick = jest.fn();
-    render(<Checkbox label='check me' checked={true} onChange={onClick} />);
-    fireEvent.click(screen.getByRole('button'));
-    expect(onClick).toHaveBeenCalledTimes(1);
-  })
+  it("does not call onChange when disabled=true", () => {
+    const handleChange = jest.fn();
+    render(<Checkbox checked={false} onChange={handleChange} disabled />);
+    fireEvent.click(screen.getByTestId("unchecked-icon"));
+    expect(handleChange).not.toHaveBeenCalled();
+  });
 
-  it('can be disabled', () => {
-    const onClick = jest.fn();
-    render(<Checkbox label='check me' checked={true} onChange={onClick} disabled={true} />);
-    expect(screen.getByRole('button')).toBeDisabled();
-  })
+  it("calls onChange with opposite value when clicked", () => {
+    const handleChange = jest.fn();
+    render(<Checkbox checked={false} onChange={handleChange} />);
+    fireEvent.click(screen.getByTestId("unchecked-icon"));
+    expect(handleChange).toHaveBeenCalledWith(true);
+  });
 
-  it('default is enabled', () => {
-    const onClick = jest.fn();
-    render(<Checkbox label='check me' checked={true} onChange={onClick} />);
-    expect(screen.getByRole('button')).not.toBeDisabled();
-  })
+  it("renders stacked layout when stacked=true", () => {
+    render(<Checkbox checked={false} label="Stacked label" stacked />);
+    const container = screen.getByText("Stacked label").closest("div");
+    expect(container).toHaveClass("flex-col");
+  });
+
+  it("forces disabled when strikethrough=true", () => {
+    const handleChange = jest.fn();
+    render(
+      <Checkbox checked={false} label="Forced disable" strikethrough onChange={handleChange} />
+    );
+    fireEvent.click(screen.getByTestId("unchecked-icon"));
+    expect(handleChange).not.toHaveBeenCalled();
+  });
 });

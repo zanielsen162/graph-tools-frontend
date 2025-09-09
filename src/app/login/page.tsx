@@ -1,6 +1,6 @@
 'use client';
 import React from 'react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Button, InputTextbox } from '@/components/atoms/atoms';
 import { useRouter } from 'next/navigation';
 import axios from 'axios';
@@ -13,6 +13,16 @@ export default function LoginPage() {
     const router = useRouter();
     const [formData, setFormData] = useState<types.UserLogin>(types.createDefaultUserLogin);
     const [loginError, setLoginError] = useState<string | null>(null);
+
+    useEffect(() => {
+        const queryParams = new URLSearchParams(window.location.search);
+        const error = queryParams.get("error");
+
+        if (error === "failed") {
+        setLoginError("Email already associated with account.");
+        }
+    }, []); 
+
 
     const handleSubmitDirect = async (event: React.MouseEvent<HTMLButtonElement>) => {
         event.preventDefault();
@@ -39,8 +49,8 @@ export default function LoginPage() {
         <ProtectedRoute allowUsers={false}>
             <div className="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
                 <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-                    <h2 className="mt-10 text-center text-2xl/9 font-bold tracking-tight text-gray-900">Sign in to your account</h2>
-                    <p className='text-gray-600 text-center'>Signing into your account will allow you to save graphs and view previous results.</p>
+                    <h2 className="mt-10 text-center text-2xl/9 font-bold tracking-tight text-gray-900 dark:text-white">Sign in to your account</h2>
+                    <p className='text-gray-600 dark:text-gray-200 text-center'>Signing into your account will allow you to save graphs and view previous results.</p>
                 </div>
 
                 <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm space-y-6">

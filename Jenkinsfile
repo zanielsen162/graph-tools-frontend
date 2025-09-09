@@ -23,6 +23,11 @@ pipeline {
                     sh 'podman rm -fv graph-tools-frontend-test'
                 }
             }
+            post {
+                always {
+                    sh 'podman rm -fv lsit-selfportal-frontend'
+                }
+            }
         }
 
         stage('Push Image') {

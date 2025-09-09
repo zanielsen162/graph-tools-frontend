@@ -7,8 +7,8 @@ import * as types from '@/CustomTypes'
 type DropdownProps = {
   options: types.StructureType[];
   label: string;
-  value: string;
-  onChange: (value: string) => void;
+  value: string | number;
+  onChange: (value: string | number) => void;
   randomFunc?: () => void;
 };
 
