@@ -1,39 +1,38 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# graph-tools-frontend
+A frontend application built with [Next.js](https://nextjs.org). This application provides an interface for retrieving and displaying user data. The goal of this project is to allow users to provide specification for desired graph features, which will be generated and displayed in an interactive viewer, as well as potential to analyze the graphs. Additionally, it makes use of Jenkins and Podman to setup the CI/CD pipeline, including deployment on a Kubernetes cluster (which has been simulated in [minikube](https://minikube.sigs.k8s.io/docs/)). For specs on Jenkins and the Kubernetes cluster, check out my [kube repo](https://github.com/zanielsen162/kube). To check out the backend (including graph generation functionality and database management), check out my [graph-tools-backend](https://github.com/zanielsen162/graph-tools-backend).
 
-## Getting Started
-
-First, run the development server:
-
+## Usage 
+1. Build the container
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+podman build --format docker --tag graph-tools-frontend .
+```
+2. Run the container
+```bash
+podman run -p 3000:3000 graph-tools-frontend
+```
+3. Stop container
+```bash
+podman stop graph-tools-frontend
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Maintenance 
+This project was structured based on [atomic design](https://www.dhiwise.com/post/the-ultimate-guide-to-react-atomic-design-principles) principles. Below is an explanation of the components and pages used.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+<details>
+    <summary>Pages</summary>
+    1. `Home`: Displays basic information about the site and links to important pages.
+    2. `Generate`: Main interface for generating a graph, includes an `Analyze` tab if the user is logged in.
+    3. `Login`: Authentication page for existing user.
+    4. `Sign Up`: Authentication page to create an user.
+    5. `Saved`: Page for users to view previously generated graphs.
+    6. `Shared`: Page where all viewers can look at graphs shared by existing users. Users can post to here from `Saved.`
+    7. `Health`: Endpoint for testing.
+</details>
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+<details>
+    <summary>Components</summary>
+    
+</details>
 
 
 ### Usability
